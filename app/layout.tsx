@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Link from 'next/dist/client/link'
-import { jsonPostRepository } from '@/repositories/post/json-post-repository'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',

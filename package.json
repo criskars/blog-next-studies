@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "preview": "next build && next start -p 3001"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -26,8 +28,10 @@
     "typescript": "^5"
   },
   "prettier": {
-    "plugins": ["prettier-plugin-tailwindcss"],
-     "trailingComma": "es5",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ],
+    "trailingComma": "es5",
     "tabWidth": 4,
     "semi": false,
     "singleQuote": true
