@@ -14,7 +14,6 @@ export class JsonPostRepository implements PostRepository {
         return this.readFromJsonFile()
     }
     async findById(id: string): Promise<PostModel> {
-        await this.simulateAPIResponseTime()
         return this.readFromJsonFile().then((posts) => {
             const post = posts.find((post) => post.id === id)
             if (!post) {
