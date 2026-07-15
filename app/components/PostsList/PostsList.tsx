@@ -1,13 +1,33 @@
 import { PostsAPI } from '@/repositories/post/json-post-repository'
 import { PostImage } from '../PostImage/PostImage'
-import { PostContent } from '../PostContent/PostContent'
+import { PostSummary } from '../PostSummary/PostSummary'
+
+type PostListItems = {
+    id: string
+    title: string
+    excerpt: string
+    src: string
+    createdAt: string
+    slug: string
+}
 
 async function PostsList() {
-
-    const posts = (await PostsAPI.findAll()).sort(
-        (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    ).slice(1)
+    // Fetch all posts, sort them by creation date, and exclude the most recent one - also map the posts to the PostListItems type, to avoid passing unnecessary data to the PostSummary and PostImage components. DO NOT PASS THE ENTIRE POST OBJECT TO THE COMPONENTS, ONLY PASS THE NECESSARY DATA.
+    const posts: PostListItems[] = (await PostsAPI.findAll())
+        .sort(
+            (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+        )
+        .slice(1)
+        .map((post) => ({
+            id: post.id,
+            title: post.title,
+            excerpt: post.excerpt,
+            src: post.coverImageUrl,
+            createdAt: post.createdAt,
+            slug: post.slug,
+        }))
 
     return (
         <section className="grid grid-cols-2 gap-4 sm:grid-cols-2">
@@ -15,12 +35,13 @@ async function PostsList() {
                 <div key={post.id} className="group m-4 flex flex-col gap-4">
                     <PostImage
                         alt={post.title}
-                        src={post.coverImageUrl}
+                        coverImageUrl={post.src}
                         width={1200}
                         height={720}
                         priority={false}
+                        slug={post.slug}
                     />
-                    <PostContent post={post} as="h2" />
+                    <PostSummary post={post} as="h2" />
                 </div>
             ))}
         </section>

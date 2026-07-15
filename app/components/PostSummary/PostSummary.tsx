@@ -1,7 +1,7 @@
 import { clsx } from 'clsx'
 import Link from 'next/link'
 
-type PostContentProps = {
+type PostSummaryProps = {
     post: {
         title: string
         excerpt: string
@@ -11,10 +11,10 @@ type PostContentProps = {
     as: 'h1' | 'h2'
 }
 
-export function PostContent({
+export function PostSummary({
     post,
     as: Heading = 'h2',
-}: PostContentProps) {
+}: PostSummaryProps) {
 const headingTagClasses = Heading === 'h1' ? 'text-3xl/tight font-extrabold sm:text-5xl' : 'text-1xl/tight font-extrabold sm:text-3xl'
 
     return (
@@ -27,6 +27,8 @@ const headingTagClasses = Heading === 'h1' ? 'text-3xl/tight font-extrabold sm:t
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
                 })}
             </time>
 
