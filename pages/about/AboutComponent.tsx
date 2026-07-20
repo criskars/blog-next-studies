@@ -4,11 +4,7 @@ import { useState } from 'react'
 import { PostsAPI } from '@/repositories/post/json-post-repository'
 import { PostModel } from '@/models/post/post-model'
 
-export default function AboutClient({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export default function AboutComponent() {
     const [selectedPost, setSelectedPost] = useState<PostModel | null>(null)
     const [searchTerm, setSearchTerm] = useState('')
 
@@ -27,7 +23,7 @@ export default function AboutClient({
     return (
         <>
             <form
-                className="p-4 flex flex-col items-center justify-center"
+                className="flex flex-col items-center justify-center p-4"
                 onSubmit={handleSearch}
             >
                 <input
@@ -45,12 +41,23 @@ export default function AboutClient({
                 </button>
             </form>
             {selectedPost && (
-                <h1 className="p-4 text-2xl font-bold">
-                    {selectedPost.title}
-                </h1>
-            )}{' '}
-            {selectedPost && <p className="p-4">{selectedPost.content}</p>}
-            {children}
+                <div className="p-4">
+                    <h2 className="text-2xl font-bold">{selectedPost.title}</h2>
+                    <p className="mt-2">{selectedPost.excerpt}</p>
+                    <p className="mt-2 text-sm text-gray-500">
+                        {new Date(selectedPost.createdAt).toLocaleDateString(
+                            'pt-BR',
+                            {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                            }
+                        )}
+                    </p>
+                </div>
+            )}
         </>
     )
 }
