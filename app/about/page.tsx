@@ -1,5 +1,5 @@
 import AboutComponent from './AboutComponent'
-import { Container } from '../../components/Container/Container'
+import { Container } from '../components/Container/Container'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

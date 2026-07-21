@@ -1,6 +1,5 @@
 import { PostSummary } from '../PostSummary/PostSummary'
 import { PostImage } from '../PostImage/PostImage'
-import { PostsAPI } from '@/repositories/post/json-post-repository'
 import { getAllPosts } from '@/app/lib/posts/queries'
 
 type PostListItem = {

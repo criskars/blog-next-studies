@@ -6,18 +6,14 @@ export class JsonPostRepository implements PostRepository {
     private async readFromJsonFile(): Promise<PostModel[]> {
         return data.posts as PostModel[]
     }
-    private async simulateAPIResponseTime() {
-        return new Promise((resolve) => setTimeout(resolve, 5000))
-    }
     async findAll(): Promise<PostModel[]> {
-        await this.simulateAPIResponseTime()
         return await this.readFromJsonFile()
     }
-    async findById(id: string): Promise<PostModel> {
+    async findBySlug(slug: string): Promise<PostModel> {
         return this.readFromJsonFile().then((posts) => {
-            const post = posts.find((post) => post.id === id)
+            const post = posts.find((post) => post.slug === slug)
             if (!post) {
-                throw new Error(`Post with ID ${id} not found`)
+                throw new Error(`Post with slug ${slug} not found`)
             }
             return post
         })

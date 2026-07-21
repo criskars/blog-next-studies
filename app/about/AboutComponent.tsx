@@ -16,7 +16,7 @@ export default function AboutComponent() {
             return
         }
 
-        const post = await PostsAPI.findById(searchTerm)
+        const post = await PostsAPI.findBySlug(searchTerm)
         setSelectedPost(post)
     }
 
