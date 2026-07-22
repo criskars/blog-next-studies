@@ -7,6 +7,7 @@ type PostSummaryProps = {
         excerpt: string
         createdAt: string
         slug: string
+        author: string
     }
     as: 'h1' | 'h2'
 }
@@ -19,6 +20,7 @@ const headingTagClasses = Heading === 'h1' ? 'text-3xl/tight font-extrabold sm:t
 
     return (
         <div className="flex flex-col gap-4 sm:justify-center">
+            <address>{post.author}</address>
             <time
                 className="block text-sm/tight text-slate-400"
                 dateTime={post.createdAt}

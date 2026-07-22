@@ -9,6 +9,7 @@ type PostListItems = {
     src: string
     createdAt: string
     slug: string
+    author: string
 }
 
 async function PostsList() {
@@ -27,6 +28,7 @@ async function PostsList() {
             src: post.coverImageUrl,
             createdAt: post.createdAt,
             slug: post.slug,
+            author: post.author
         }))
 
     return (

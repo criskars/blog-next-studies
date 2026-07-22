@@ -8,6 +8,7 @@ type PostListItem = {
     slug: string
     excerpt: string
     coverImageUrl: string
+    author: string
 }
 
 export async function FeaturedPost() {
@@ -26,6 +27,7 @@ export async function FeaturedPost() {
         slug: post.slug,
         excerpt: post.excerpt,
         coverImageUrl: post.coverImageUrl,
+        author: post.author
     }
 
     return (
