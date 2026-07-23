@@ -3,7 +3,7 @@ import { getPostsBySlug } from '@/app/lib/posts/queries'
 import { Metadata } from 'next'
 import PostImage from '../components/PostImage/PostImage'
 import { PostSummary } from '../components/PostSummary/PostSummary'
-import { MDXRemote } from 'next-mdx-remote/rsc'
+import SafeMarkdown from '../components/SafeMarkdown/SafeMarkdown'
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -39,7 +39,12 @@ export default async function PostPage({ params }: Props) {
                     slug={postData.slug}
                 />
                 <PostSummary post={postData} as="h2" />
-                <MDXRemote source={postData.content}/>
+                <hr></hr>
+                <section className="prose max-w-none dark:prose-invert">
+                    <SafeMarkdown
+                        rawMdxString={postData.content}
+                    ></SafeMarkdown>
+                </section>
             </article>
         </Container>
     )
