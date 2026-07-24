@@ -20,6 +20,7 @@ export function PostImage({ coverImageUrl, alt, width, height, priority, slug }:
                 height={height}
                 alt={alt}
                 priority={priority}
+                loading="eager"
             />
         </Link>
     )

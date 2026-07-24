@@ -29,7 +29,7 @@ export default async function PostPage({ params }: Props) {
 
     return (
         <Container>
-            <article className="group m-4 flex flex-col gap-4">
+            <article className="group p-4 flex min-w-0 flex-col gap-4 w-full">
                 <PostImage
                     alt={postData.title}
                     coverImageUrl={postData.coverImageUrl}
@@ -40,7 +40,7 @@ export default async function PostPage({ params }: Props) {
                 />
                 <PostSummary post={postData} as="h2" />
                 <hr></hr>
-                <section className="prose max-w-none dark:prose-invert">
+                <section className="prose dark:prose-invert prose-a:transition prose-img:mx-auto prose-img:max-w-full prose-pre:max-w-full prose-pre:overflow-x-auto prose-table:block prose-table:overflow-x-auto prose-table:w-full max-w-none min-w-0 overflow-x-hidden break-words">
                     <SafeMarkdown
                         rawMdxString={postData.content}
                     ></SafeMarkdown>
