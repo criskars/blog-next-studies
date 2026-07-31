@@ -1,5 +1,5 @@
 import { Container } from '@/app/components/Container/Container'
-import { getPostsBySlug } from '@/app/lib/posts/queries'
+import { getPostsBySlugPublic } from '@/app/lib/posts/queries'
 import { Metadata } from 'next'
 import PostImage from '../components/PostImage/PostImage'
 import { PostSummary } from '../components/PostSummary/PostSummary'
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params
 
     // fetch data
-    const postData = await getPostsBySlug(slug)
+    const postData = await getPostsBySlugPublic(slug)
 
     return {
         title: postData.title,
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
     const { slug } = await params
 
-    const postData = await getPostsBySlug(slug)
+    const postData = await getPostsBySlugPublic(slug)
 
     return (
         <Container>

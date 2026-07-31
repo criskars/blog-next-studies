@@ -1,6 +1,6 @@
 import { PostImage } from '../PostImage/PostImage'
 import { PostSummary } from '../PostSummary/PostSummary'
-import { getAllPosts } from '@/app/lib/posts/queries'
+import { getAllPostsPublic } from '@/app/lib/posts/queries'
 
 type PostListItems = {
     id: string
@@ -14,7 +14,7 @@ type PostListItems = {
 
 async function PostsList() {
     // Fetch all posts, sort them by creation date, and exclude the most recent one - also map the posts to the PostListItems type, to avoid passing unnecessary data to the PostSummary and PostImage components. DO NOT PASS THE ENTIRE POST OBJECT TO THE COMPONENTS, ONLY PASS THE NECESSARY DATA.
-    const posts: PostListItems[] = (await getAllPosts())
+    const posts: PostListItems[] = (await getAllPostsPublic())
         .sort(
             (a, b) =>
                 new Date(b.createdAt).getTime() -

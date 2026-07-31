@@ -1,6 +1,6 @@
 import { PostSummary } from '../PostSummary/PostSummary'
 import { PostImage } from '../PostImage/PostImage'
-import { getAllPosts } from '@/app/lib/posts/queries'
+import { getAllPostsPublic } from '@/app/lib/posts/queries'
 
 type PostListItem = {
     title: string
@@ -12,7 +12,7 @@ type PostListItem = {
 }
 
 export async function FeaturedPost() {
-    const post = (await getAllPosts()).sort(
+    const post = (await getAllPostsPublic()).sort(
         (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )[0]
