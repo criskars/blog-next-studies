@@ -1,5 +1,5 @@
-import { Container } from './components/Container/Container'
-import { NotFoundContent } from "./components/NotFoundContent/NotFoundContent"
+import { Container } from './components/shared/Container/Container'
+import { NotFoundContent } from './components/shared/NotFoundContent/NotFoundContent'
 
 export const metadata = {
     title: '404 - page not found',

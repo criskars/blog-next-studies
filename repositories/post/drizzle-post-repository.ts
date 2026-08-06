@@ -1,8 +1,8 @@
-import { PostRepository } from './post-repository'
+import { PostRepository } from '../post-repository'
 import { PostModel } from '@/models/post/post-model'
 import { drizzle } from 'drizzle-orm/libsql'
 import { postsTable } from '@/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 
 export class DrizzlePostRepository implements PostRepository {
     private async readFromDB(): Promise<PostModel[]> {
@@ -16,23 +16,27 @@ export class DrizzlePostRepository implements PostRepository {
         return await this.readFromDB()
     }
     async findAllPublic(): Promise<PostModel[]> {
-         const db = drizzle(process.env.DB_FILE_NAME!)
+        const db = drizzle(process.env.DB_FILE_NAME!)
 
-        const posts = await db.select().from(postsTable).where(eq(postsTable.published, true))
+        const posts = await db
+            .select()
+            .from(postsTable)
+            .where(eq(postsTable.published, true))
 
         return posts as PostModel[]
     }
     async findBySlugPublic(slug: string): Promise<PostModel> {
-        return await this.readFromDB().then((posts) => {
-            const post = posts.find(
-                (post) => post.slug === slug && post.published === true
+        const db = drizzle(process.env.DB_FILE_NAME!)
+
+        const post = await db
+            .select()
+            .from(postsTable)
+            .where(
+                and(eq(postsTable.published, true), eq(postsTable.slug, slug))
             )
-            if (!post) {
-                throw new Error(`Post with slug ${slug} not found`)
-            }
-            return post
-        })
+
+        return post[0] as PostModel
     }
 }
 
-export const PostsAPI: PostRepository = new DrizzlePostRepository()
+export const PostsDatabaseAPI: PostRepository = new DrizzlePostRepository()

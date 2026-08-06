@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
-import { Container } from './components/Container/Container'
-import { FeaturedPost } from './components/FeaturedPost/FeaturedPost'
-import PostsList from './components/PostsList/PostsList'
-import { SpinLoader } from './components/SpinLoader/SpinLoader'
+import { Container } from './components/shared/Container/Container'
+import { FeaturedPost } from './components/public/FeaturedPost/FeaturedPost'
+import PostsList from './components/public/PostsList/PostsList'
+import { SpinLoader } from './components/shared/SpinLoader/SpinLoader'
 
 import { drizzle } from 'drizzle-orm/libsql'
 import { postsTable } from '@/db/schema'

@@ -1,6 +1,6 @@
 import { PostSummary } from '../PostSummary/PostSummary'
 import { PostImage } from '../PostImage/PostImage'
-import { getAllPostsPublic } from '@/app/lib/posts/queries'
+import { getAllPostsPublic } from '@/app/lib/queries/database/public'
 
 type PostListItem = {
     title: string
@@ -27,7 +27,7 @@ export async function FeaturedPost() {
         slug: post.slug,
         excerpt: post.excerpt,
         coverImageUrl: post.coverImageUrl,
-        author: post.author
+        author: post.author,
     }
 
     return (

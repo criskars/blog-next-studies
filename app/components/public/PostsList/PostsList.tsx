@@ -1,6 +1,6 @@
 import { PostImage } from '../PostImage/PostImage'
 import { PostSummary } from '../PostSummary/PostSummary'
-import { getAllPostsPublic } from '@/app/lib/posts/queries'
+import { getAllPostsPublic } from '@/app/lib/queries/database/public'
 
 type PostListItems = {
     id: string
@@ -28,7 +28,7 @@ async function PostsList() {
             src: post.coverImageUrl,
             createdAt: post.createdAt,
             slug: post.slug,
-            author: post.author
+            author: post.author,
         }))
 
     return (

@@ -1,9 +1,9 @@
-import { Container } from '@/app/components/Container/Container'
-import { getPostsBySlugPublic } from '@/app/lib/posts/queries'
+import { Container } from '@/app/components/shared/Container/Container'
+import { getPostsBySlugPublic } from '@/app/lib/queries/database/public'
 import { Metadata } from 'next'
-import PostImage from '../components/PostImage/PostImage'
-import { PostSummary } from '../components/PostSummary/PostSummary'
-import SafeMarkdown from '../components/SafeMarkdown/SafeMarkdown'
+import PostImage from '../components/public/PostImage/PostImage'
+import { PostSummary } from '../components/public/PostSummary/PostSummary'
+import SafeMarkdown from '../components/public/SafeMarkdown/SafeMarkdown'
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -29,7 +29,7 @@ export default async function PostPage({ params }: Props) {
 
     return (
         <Container>
-            <article className="group p-4 flex min-w-0 flex-col gap-4 w-full">
+            <article className="group flex w-full min-w-0 flex-col gap-4 p-4">
                 <PostImage
                     alt={postData.title}
                     coverImageUrl={postData.coverImageUrl}

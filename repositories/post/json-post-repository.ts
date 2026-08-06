@@ -1,5 +1,5 @@
 import { PostModel } from '@/models/post/post-model'
-import { PostRepository } from './post-repository'
+import { PostRepository } from '../post-repository'
 import data from '@/db/seed/posts.json'
 
 export class JsonPostRepository implements PostRepository {

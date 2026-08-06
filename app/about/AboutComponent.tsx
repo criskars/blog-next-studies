@@ -1,22 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { PostsAPI } from '@/repositories/post/json-post-repository'
 import { PostModel } from '@/models/post/post-model'
+import { searchSlug } from '../actions/search-slug'
 
 export default function AboutComponent() {
     const [selectedPost, setSelectedPost] = useState<PostModel | null>(null)
     const [searchTerm, setSearchTerm] = useState('')
 
-    async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSearch(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
 
         if (!searchTerm.trim()) {
             setSelectedPost(null)
             return
         }
+        const post = await searchSlug(searchTerm)
 
-        const post = await PostsAPI.findBySlug(searchTerm)
         setSelectedPost(post)
     }
 
