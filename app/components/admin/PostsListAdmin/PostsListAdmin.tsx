@@ -1,5 +1,5 @@
 import { getAllPosts } from '@/app/lib/queries/database/admin'
-import Link from 'next/link'
+import DropdownMenu from '../AdminDropdownMenu/AdminDropdownMenu'
 
 type PostListItems = {
     id: string
@@ -9,6 +9,7 @@ type PostListItems = {
     createdAt: string
     slug: string
     author: string
+    published: boolean
 }
 
 async function PostsListAdmin() {
@@ -28,10 +29,11 @@ async function PostsListAdmin() {
             createdAt: post.createdAt,
             slug: post.slug,
             author: post.author,
+            published: post.published,
         }))
 
     return (
-        <section>
+        <section className="max-w-8xl flex w-full items-center justify-center overflow-x-auto px-4 max-md:justify-around">
             <table>
                 <thead>
                     <tr>
@@ -47,21 +49,23 @@ async function PostsListAdmin() {
                         <th className="border border-gray-300 px-4 py-2 text-left">
                             Created At
                         </th>
+                        <th className="border border-gray-300 px-4 py-2 text-left">
+                            Published
+                        </th>
+                        <th className="border border-gray-300 px-4 py-2 text-left">
+                            Actions
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {posts.map((post) => (
-                        <tr className="hover:bg-gray-100 hover:text-black" key={post.id}>
-                            <td className="border border-gray-300 px-4 py-2">
-                                {post.id}
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2">
-                                <Link href={`/admin/posts/${post.id}`}>{post.title}</Link>
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2">
+                        <tr key={post.id}>
+                            <td className="border-y p-4">{post.id}</td>
+                            <td className="border-y p-4">{post.title}</td>
+                            <td className="border-y p-4">
                                 {post.author}
                             </td>
-                            <td className="border border-gray-300 px-4 py-2">
+                            <td className="border-y p-4">
                                 {new Date(post.createdAt).toLocaleDateString(
                                     'pt-BR',
                                     {
@@ -72,6 +76,12 @@ async function PostsListAdmin() {
                                         minute: '2-digit',
                                     }
                                 )}
+                            </td>
+                            <td className="border-y p-4">
+                                {post.published ? 'Published' : 'Draft'}
+                            </td>
+                            <td className="border-y p-4 text-center">
+                                <DropdownMenu id={post.id} />
                             </td>
                         </tr>
                     ))}

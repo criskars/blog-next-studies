@@ -3,7 +3,6 @@ import remarkGfm from 'remark-gfm'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkMdxRemoveExpressions from 'remark-mdx-remove-expressions'
 import TaskCheckbox from '../TaskCheckbox/TaskCheckbox'
-import { table } from 'console'
 
 type SafeMarkdownProps = {
     rawMdxString: string
