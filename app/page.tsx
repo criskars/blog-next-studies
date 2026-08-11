@@ -6,7 +6,6 @@ import { SpinLoader } from './components/shared/SpinLoader/SpinLoader'
 
 import { drizzle } from 'drizzle-orm/libsql'
 import { postsTable } from '@/db/schema'
-// import { eq } from 'drizzle-orm'
 
 export default async function Home() {
     const db = drizzle(process.env.DB_FILE_NAME!)
@@ -27,10 +26,6 @@ export default async function Home() {
     // }
 
     // await db.insert(postsTable).values(post)
-
-    // await db
-    //     .delete(postsTable)
-    //     .where(eq(postsTable.id, '0653cbb5-42f3-47f1-91ec-7dce59c397ea'))
 
     return (
         <Container>

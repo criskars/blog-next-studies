@@ -37,6 +37,11 @@ export class DrizzlePostRepository implements PostRepository {
 
         return post[0] as PostModel
     }
+
+    async deletePost(id: string): Promise<void> {
+        const db = drizzle(process.env.DB_FILE_NAME!)
+        await db.delete(postsTable).where(eq(postsTable.id, id))
+    }
 }
 
 export const PostsDatabaseAPI: PostRepository = new DrizzlePostRepository()

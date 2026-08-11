@@ -5,22 +5,28 @@ import { DropdownMenu } from 'radix-ui'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { AlertDialog } from 'radix-ui'
-import { deletePost } from '@/app/admin/posts/actions'
+import { deletePost } from '@/app/actions/delete-post'
+import { SpinLoader } from '@/app/components/shared/SpinLoader/SpinLoader'
 
 type AdminDropdownMenuProps = {
     id: string
 }
 
 const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
-    // const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
-    // const [urlsChecked, setUrlsChecked] = React.useState(false)
-    // const [person, setPerson] = React.useState('pedro')
-
-    const [open, setOpen] = React.useState(false)
+    const [openModal, setOpenModal] = React.useState(false)
+    const [isPending, startTransition] = React.useTransition()
 
     async function handleConfirmDelete() {
-        await deletePost(id)
-        setOpen(false)
+        startTransition(async () => {
+            // await new Promise((resolve) =>
+            //     setTimeout(() => {
+            //         debugger
+            //     }, 3000)
+            // )
+            await deletePost(id)
+            setOpenModal(false)
+
+        })
     }
 
     return (
@@ -47,7 +53,7 @@ const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
                             className="group relative flex h-6.25 items-center pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black"
                             onSelect={(event) => {
                                 event.preventDefault()
-                                setOpen(true)
+                                setOpenModal(true)
                             }}
                         >
                             Delete
@@ -56,7 +62,7 @@ const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
 
-            <AlertDialog.Root open={open} onOpenChange={setOpen}>
+            <AlertDialog.Root open={openModal} onOpenChange={setOpenModal}>
                 <AlertDialog.Portal>
                     <AlertDialog.Overlay className="fixed inset-0 bg-black/50" />
                     <AlertDialog.Trigger asChild>
@@ -69,16 +75,32 @@ const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
                         <AlertDialog.Description className="mt-2 text-sm text-white">
                             Are you sure you want to delete this post?
                         </AlertDialog.Description>
-                        <AlertDialog.Cancel asChild>
-                            <button className="p-4 text-white">
-                                Cancel
+                        <div className="flex items-center justify-start gap-4">
+                            <AlertDialog.Cancel asChild>
+                                <button className="p-4 text-white">
+                                    Cancel
+                                </button>
+                            </AlertDialog.Cancel>
+                            <button
+                                className="relative inline-flex items-center justify-center p-4 text-white"
+                                onClick={handleConfirmDelete}
+                                disabled={isPending}
+                            >
+                                <span
+                                    className={
+                                        isPending ? 'opacity-0' : 'opacity-100'
+                                    }
+                                >
+                                    Delete
+                                </span>
+
+                                {isPending && (
+                                    <span className="absolute inset-0 flex items-center justify-center">
+                                        <SpinLoader />
+                                    </span>
+                                )}
                             </button>
-                        </AlertDialog.Cancel>
-                        <AlertDialog.Action asChild>
-                            <button className="p-4 text-white" onClick={handleConfirmDelete}>
-                                Delete
-                            </button>
-                        </AlertDialog.Action>
+                        </div>
                     </AlertDialog.Content>
                 </AlertDialog.Portal>
             </AlertDialog.Root>
