@@ -31,7 +31,7 @@ export async function FeaturedPost() {
     }
 
     return (
-        <section className="group m-4 grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <section className="group m-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <PostImage
                 alt={recentPost.title}
                 slug={recentPost.slug}

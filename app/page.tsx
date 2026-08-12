@@ -4,13 +4,13 @@ import { FeaturedPost } from './components/public/FeaturedPost/FeaturedPost'
 import PostsList from './components/public/PostsList/PostsList'
 import { SpinLoader } from './components/shared/SpinLoader/SpinLoader'
 
-import { drizzle } from 'drizzle-orm/libsql'
-import { postsTable } from '@/db/schema'
+// import { drizzle } from 'drizzle-orm/libsql'
+// import { postsTable } from '@/db/schema'
 
 export default async function Home() {
-    const db = drizzle(process.env.DB_FILE_NAME!)
+    // const db = drizzle(process.env.DB_FILE_NAME!)
 
-    console.log(await db.select().from(postsTable))
+    // console.log(await db.select().from(postsTable))
 
     // const post = {
     //     id: crypto.randomUUID(),

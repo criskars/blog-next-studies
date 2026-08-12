@@ -75,14 +75,14 @@ const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
                         <AlertDialog.Description className="mt-2 text-sm text-white">
                             Are you sure you want to delete this post?
                         </AlertDialog.Description>
-                        <div className="flex items-center justify-start gap-4">
+                        <div className="flex items-center justify-start gap-4 mt-4">
                             <AlertDialog.Cancel asChild>
-                                <button className="p-4 text-white">
+                                <button className="p-4 text-white cursor-pointer">
                                     Cancel
                                 </button>
                             </AlertDialog.Cancel>
                             <button
-                                className="relative inline-flex items-center justify-center p-4 text-white"
+                                className="relative inline-flex items-center justify-center p-4 text-white cursor-pointer disabled:cursor-not-allowed"
                                 onClick={handleConfirmDelete}
                                 disabled={isPending}
                             >
