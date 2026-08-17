@@ -19,7 +19,6 @@ async function PostsListAdmin() {
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()
         )
-        .slice(1)
         .map((post) => ({
             id: post.id,
             title: post.title,
