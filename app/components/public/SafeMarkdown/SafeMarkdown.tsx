@@ -33,6 +33,7 @@ export default async function SafeMarkdown({
     }
 
     return (
+        <div className="[&_li.task-list-item]:list-none [&_li.task-list-item]:ml-0 [&_li.task-list-item]:pl-0 [&_li.task-list-item::marker]:content-['']">
         <MDXRemote
             source={rawMdxString}
             options={options}
@@ -45,5 +46,6 @@ export default async function SafeMarkdown({
                 }
             }}
         />
+        </div>
     )
 }

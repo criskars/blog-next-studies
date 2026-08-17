@@ -11,6 +11,7 @@ export default function TaskCheckbox(
             type="checkbox"
             defaultChecked={Boolean(checked)}
             disabled={false}
+            className=""
             onChange={() => {
                 return
             }}

@@ -3,6 +3,8 @@ import PostsListAdmin from '@/app/components/admin/PostsListAdmin/PostsListAdmin
 import { Container } from '@/app/components/shared/Container/Container'
 import { SpinLoader } from '@/app/components/shared/SpinLoader/SpinLoader'
 import { Suspense } from 'react'
+import { Toast } from 'radix-ui'
+import { AdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 
 export const metadata: Metadata = {
     title: 'Admin Posts',
@@ -11,10 +13,12 @@ export const metadata: Metadata = {
 
 export default async function AdminPostList() {
     return (
-        <Container>
-            <Suspense fallback={<SpinLoader />}>
-                <PostsListAdmin />
-            </Suspense>
-        </Container>
+        <AdminToast>
+            <Container>
+                <Suspense fallback={<SpinLoader />}>
+                    <PostsListAdmin />
+                </Suspense>
+            </Container>
+        </AdminToast>
     )
 }

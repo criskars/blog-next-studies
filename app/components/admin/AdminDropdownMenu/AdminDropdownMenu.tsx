@@ -7,26 +7,28 @@ import Link from 'next/link'
 import { AlertDialog } from 'radix-ui'
 import { deletePost } from '@/app/actions/delete-post'
 import { SpinLoader } from '@/app/components/shared/SpinLoader/SpinLoader'
+import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 
 type AdminDropdownMenuProps = {
     id: string
 }
 
 const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
+    const { showToast } = useAdminToast()
     const [openModal, setOpenModal] = React.useState(false)
-    const [isPending, startTransition] = React.useTransition()
+    const [isDeleting, startDeleting] = React.useState(false)
 
     async function handleConfirmDelete() {
-        startTransition(async () => {
-            // await new Promise((resolve) =>
-            //     setTimeout(() => {
-            //         debugger
-            //     }, 3000)
-            // )
+        startDeleting(true)
+        try {
             await deletePost(id)
             setOpenModal(false)
-
-        })
+            showToast('Post deleted successfully!')
+        } catch (error) {
+            console.error('Error deleting post:', error)
+        } finally {
+            startDeleting(false)
+        }
     }
 
     return (
@@ -75,26 +77,26 @@ const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
                         <AlertDialog.Description className="mt-2 text-sm text-white">
                             Are you sure you want to delete this post?
                         </AlertDialog.Description>
-                        <div className="flex items-center justify-start gap-4 mt-4">
+                        <div className="mt-4 flex items-center justify-start gap-4">
                             <AlertDialog.Cancel asChild>
-                                <button className="p-4 text-white cursor-pointer">
+                                <button className="cursor-pointer p-4 text-white">
                                     Cancel
                                 </button>
                             </AlertDialog.Cancel>
                             <button
-                                className="relative inline-flex items-center justify-center p-4 text-white cursor-pointer disabled:cursor-not-allowed"
+                                className="relative inline-flex cursor-pointer items-center justify-center p-4 text-white disabled:cursor-not-allowed"
                                 onClick={handleConfirmDelete}
-                                disabled={isPending}
+                                disabled={isDeleting}
                             >
                                 <span
                                     className={
-                                        isPending ? 'opacity-0' : 'opacity-100'
+                                        isDeleting ? 'opacity-0' : 'opacity-100'
                                     }
                                 >
                                     Delete
                                 </span>
 
-                                {isPending && (
+                                {isDeleting && (
                                     <span className="absolute inset-0 flex items-center justify-center">
                                         <SpinLoader />
                                     </span>
