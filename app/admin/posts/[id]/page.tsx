@@ -1,11 +1,19 @@
-import Container from "@/app/components/shared/Container/Container";
+import Container from '@/app/components/shared/Container/Container'
+import { AdminRefresh } from '@/app/components/admin/AdminRefresh/AdminRefresh'
 
 type Props = {
     params: Promise<{ id: string }>
 }
 
 export default async function AdminPostDetails({ params }: Props) {
-    const { id } = await params;
+    const { id } = await params
 
-    return (<Container><p className="text-lg font-semibold px-4">Admin Post Details for ID: {id}</p></Container>)
+    return (
+        <Container>
+            <AdminRefresh />
+            <p className="px-4 text-lg font-semibold">
+                Admin Post Details for ID: {id}
+            </p>
+        </Container>
+    )
 }

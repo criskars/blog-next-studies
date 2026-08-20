@@ -4,6 +4,9 @@ import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkMdxRemoveExpressions from 'remark-mdx-remove-expressions'
 import TaskCheckbox from '../TaskCheckbox/TaskCheckbox'
 
+import '@mdxeditor/editor/style.css'
+import '@mdxeditor/editor/style.css'
+
 type SafeMarkdownProps = {
     rawMdxString: string
 }
@@ -33,19 +36,21 @@ export default async function SafeMarkdown({
     }
 
     return (
-        <div className="[&_li.task-list-item]:list-none [&_li.task-list-item]:ml-0 [&_li.task-list-item]:pl-0 [&_li.task-list-item::marker]:content-['']">
-        <MDXRemote
-            source={rawMdxString}
-            options={options}
-            components={{
-                input: (props) => {
-                    if (props.type === 'checkbox') {
-                        return <TaskCheckbox {...props} />
-                    }
-                    return <input {...props} />
-                }
-            }}
-        />
+        <div className="[&_li.task-list-item]:ml-0 [&_li.task-list-item]:list-none [&_li.task-list-item]:pl-0 [&_li.task-list-item::marker]:content-['']">
+            <MDXRemote
+                source={rawMdxString}
+                options={options}
+                components={{
+                    input: (props) => {
+                        if (props.type === 'checkbox') {
+                            return <TaskCheckbox {...props} />
+                        }
+                        return <input {...props} />
+                    },
+                }}
+            />
         </div>
     )
 }
+
+

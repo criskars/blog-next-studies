@@ -11,12 +11,15 @@ export function Header() {
                 </Link>
 
                 <nav className="p-4 text-lg font-medium text-zinc-950 dark:text-zinc-50">
-                    <ul className="flex items-center justify-end flex-wrap gap-4">
+                    <ul className="flex items-center justify-end gap-4 max-[382px]:gap-2">
                         <li>
                             <Link href="/">Home</Link>
                         </li>
                         <li>
                             <Link href="/about">About</Link>
+                        </li>
+                        <li>
+                            <Link href="/admin/posts">Admin</Link>
                         </li>
                     </ul>
                 </nav>

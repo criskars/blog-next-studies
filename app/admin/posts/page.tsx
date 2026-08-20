@@ -18,7 +18,7 @@ export default async function AdminPostList() {
     return (
         <AdminToast>
             <Container>
-                <AdminRefresh />
+                <AdminRefresh />            
                 <Suspense fallback={<SpinLoader />}>
                     <PostsListAdmin />
                 </Suspense>
