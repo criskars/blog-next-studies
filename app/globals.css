@@ -27,3 +27,10 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.markdown-editor.mdxeditor .mdxeditor-toolbar {
+    --radius-medium: 0px;
+    --radius-base: 0px;
+    --baseBg: transparent;
+    --baseBorder: transparent;
+}

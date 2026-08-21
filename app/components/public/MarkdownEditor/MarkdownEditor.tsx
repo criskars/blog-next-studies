@@ -8,9 +8,14 @@ import {
     markdownShortcutPlugin,
     toolbarPlugin,
     UndoRedo,
+    BoldItalicUnderlineToggles,
+    ListsToggle,
+    InsertTable,
+    StrikeThroughSupSubToggles,
     linkPlugin,
     tablePlugin,
 } from '@mdxeditor/editor'
+import '@mdxeditor/editor/style.css'
 
 type SafeMarkdownProps = {
     rawMdxString: string
@@ -19,10 +24,21 @@ type SafeMarkdownProps = {
 export function SafeMarkdownEditor({ rawMdxString }: SafeMarkdownProps) {
     return (
         <MDXEditor
+            className='markdown-editor'
             markdown={rawMdxString}
             plugins={[
                 toolbarPlugin({
-                    toolbarContents: () => <UndoRedo />,
+                    toolbarClassName:
+                        'markdown-toolbar',
+                    toolbarContents: () => (
+                        <>
+                            <UndoRedo />
+                            <BoldItalicUnderlineToggles />
+                            <StrikeThroughSupSubToggles />
+                            <ListsToggle />
+                            <InsertTable />
+                        </>
+                    ),
                 }),
                 headingsPlugin(),
                 listsPlugin(),
@@ -32,7 +48,7 @@ export function SafeMarkdownEditor({ rawMdxString }: SafeMarkdownProps) {
                 linkPlugin(),
                 tablePlugin(),
             ]}
-             contentEditableClassName="prose prose-invert min-h-[200px] p-4 border border-white"
+            contentEditableClassName="prose prose-invert min-h-[400px] p-4 border border-white"
         />
     )
 }
