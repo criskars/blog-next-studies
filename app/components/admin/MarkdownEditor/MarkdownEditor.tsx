@@ -15,7 +15,6 @@ import {
     linkPlugin,
     tablePlugin,
 } from '@mdxeditor/editor'
-import '@mdxeditor/editor/style.css'
 
 type SafeMarkdownProps = {
     rawMdxString: string
@@ -24,12 +23,10 @@ type SafeMarkdownProps = {
 export function SafeMarkdownEditor({ rawMdxString }: SafeMarkdownProps) {
     return (
         <MDXEditor
-            className='markdown-editor'
+            className='mdxeditor-theme'
             markdown={rawMdxString}
             plugins={[
                 toolbarPlugin({
-                    toolbarClassName:
-                        'markdown-toolbar',
                     toolbarContents: () => (
                         <>
                             <UndoRedo />
@@ -48,7 +45,6 @@ export function SafeMarkdownEditor({ rawMdxString }: SafeMarkdownProps) {
                 linkPlugin(),
                 tablePlugin(),
             ]}
-            contentEditableClassName="prose prose-invert min-h-[400px] p-4 border border-white"
         />
     )
 }

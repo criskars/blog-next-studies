@@ -1,3 +1,4 @@
+@import '@mdxeditor/editor/style.css';
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
@@ -28,9 +29,56 @@ body {
     padding: 0;
 }
 
-.markdown-editor.mdxeditor .mdxeditor-toolbar {
-    --radius-medium: 0px;
-    --radius-base: 0px;
-    --baseBg: transparent;
-    --baseBorder: transparent;
+@layer components {
+    .mdxeditor-theme {
+        --basePageBg: black;
+        --baseBg: black;
+        --baseBgSubtle: theme(colors.zinc.800);
+        --baseLine: theme(colors.zinc.700);
+        --baseBorder: theme(colors.zinc.700);
+        --baseText: white;
+
+        --accentBg: theme(colors.sky.900);
+        --accentBgHover: theme(colors.sky.800);
+        --accentLine: theme(colors.sky.700);
+        --accentBorder: theme(colors.sky.700);
+        --accentSolid: theme(colors.sky.500);
+        --accentSolidHover: theme(colors.sky.400);
+        --accentText: theme(colors.sky.300);
+        --accentTextContrast: white;
+
+        --font-body: var(--font-inter);
+        --font-mono: var(--font-geist-mono);
+
+        color: white;
+        background: black;
+        border: 1px solid white;
+        border-radius: none;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .mdxeditor-theme .mdxeditor-toolbar {
+        --radius-medium: 0;
+        width: 100%;
+    }
+
+    .mdxeditor-theme .mdxeditor-root-contenteditable {
+        --baseTextContrast: white;
+        @apply prose prose-neutral;
+    }
+
+    .mdxeditor-theme .mdxeditor-root-contenteditable li[role='checkbox'] {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .mdxeditor-theme
+        .mdxeditor-root-contenteditable
+        li[role='checkbox']::before {
+        margin-top: 6px;
+        flex-shrink: 0;
+    }
 }

@@ -2,7 +2,7 @@
 
 import { Form } from 'radix-ui'
 import { useState } from 'react'
-import { SafeMarkdownEditor } from '../../public/MarkdownEditor/MarkdownEditor'
+import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
 
 function slugify(value: string) {
     return value
@@ -47,7 +47,7 @@ function AdminForm() {
     }
 
     return (
-        <Form.Root className="flex w-150 flex-col gap-4 bg-black p-4">
+        <Form.Root className="flex w-150 flex-col gap-4 bg-black px-4 max-[610px]:w-full">
             <Form.Field className="group grid" name="postTitle">
                 <div className="flex items-baseline justify-between">
                     <Form.Label className={labelStyles}>Post Title</Form.Label>
@@ -120,7 +120,12 @@ function AdminForm() {
                     </Form.Message>
                 </div>
                 <Form.Control asChild>
-                    <input className={inputStyles} type="file" required />
+                    <input
+                        className="inline-flex items-center justify-center bg-black py-2 text-[15px] leading-none text-white outline-none file:border file:mr-4 file:px-2 file:h-8 focus:shadow-[0_0_0_2px]"
+                        type="file"
+                        required
+                        accept=".jpg, .png"
+                    />
                 </Form.Control>
             </Form.Field>
             <Form.Field className="group grid" name="postAuthor">
