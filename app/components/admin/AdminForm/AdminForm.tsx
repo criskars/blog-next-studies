@@ -47,7 +47,7 @@ function AdminForm() {
     }
 
     return (
-        <Form.Root className="flex w-150 flex-col gap-4 bg-black px-4 max-[610px]:w-full">
+        <Form.Root className="flex w-full flex-col gap-4 bg-black px-4 max-[610px]:w-full">
             <Form.Field className="group grid" name="postTitle">
                 <div className="flex items-baseline justify-between">
                     <Form.Label className={labelStyles}>Post Title</Form.Label>

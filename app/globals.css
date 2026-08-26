@@ -36,7 +36,6 @@ body {
         --baseBgSubtle: theme(colors.zinc.800);
         --baseLine: theme(colors.zinc.700);
         --baseBorder: theme(colors.zinc.700);
-        --baseText: white;
 
         --accentBg: theme(colors.sky.900);
         --accentBgHover: theme(colors.sky.800);
@@ -65,9 +64,23 @@ body {
     }
 
     .mdxeditor-theme .mdxeditor-root-contenteditable {
-        --baseTextContrast: white;
         @apply prose prose-neutral;
+        --baseTextContrast: white;
+        --tw-prose-headings: white;
+        --tw-prose-links: #3b82f6;
+        --baseText: white;
+        --baseTextContrast: black;
     }
+
+    .mdxeditor-theme .mdxeditor-root-contenteditable blockquote {
+        --baseText: white;
+    }
+
+    .mdxeditor-theme .mdxeditor-root-contenteditable button {
+        --baseText: black;
+        color: black;
+    }
+
 
     .mdxeditor-theme .mdxeditor-root-contenteditable li[role='checkbox'] {
         display: flex;
@@ -79,6 +92,11 @@ body {
         .mdxeditor-root-contenteditable
         li[role='checkbox']::before {
         margin-top: 6px;
-        flex-shrink: 0;
+    }
+
+    .mdxeditor-theme
+        .mdxeditor-root-contenteditable
+        li[role='checkbox']::after {
+        margin-top: 7px;
     }
 }
