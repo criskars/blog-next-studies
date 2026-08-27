@@ -32,14 +32,14 @@ async function PostsListAdmin() {
         }))
 
     return (
-        <div className="flex w-full flex-col items-end justify-center">
+        <div className="flex flex-col items-end justify-center max-w-357.5">
             <Link
                 className="m-4 border border-white px-4 hover:bg-white hover:text-black"
                 href="/admin/posts/new"
             >
                 New post
             </Link>
-            <section className="max-w-8xl flex w-full items-center justify-center overflow-x-auto px-4 max-md:justify-around">
+            <section className="flex w-full items-center justify-center overflow-x-auto px-4 max-md:justify-around">
                 <table>
                     <thead>
                         <tr>

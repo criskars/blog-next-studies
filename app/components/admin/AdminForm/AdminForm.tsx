@@ -3,6 +3,7 @@
 import { Form } from 'radix-ui'
 import { useState } from 'react'
 import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
+import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 
 function slugify(value: string) {
     return value
@@ -16,6 +17,8 @@ function slugify(value: string) {
 }
 
 function AdminForm() {
+    const { showToast } = useAdminToast()
+
     const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
     function isInvalidSlug(value: string): boolean {
@@ -44,6 +47,28 @@ function AdminForm() {
     function handleSlugChange(event: React.ChangeEvent<HTMLInputElement>) {
         setSlugManuallyEdited(true)
         setSlug(slugify(event.target.value))
+    }
+
+    const [file, setFile] = useState<File | null>(null)
+
+    const MAX_FILE_SIZE = 1 * 1024 * 1024
+
+    const handleFileSize = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.currentTarget.files?.[0]
+
+        if (!selectedFile) {
+            setFile(null)
+            return
+        }
+
+        if (selectedFile.size >= MAX_FILE_SIZE) {
+            showToast('File is too large. Maximum allowed size is 1MB.')
+            setFile(null)
+            event.target.value = ''
+            return
+        }
+
+        setFile(selectedFile)
     }
 
     return (
@@ -121,10 +146,11 @@ function AdminForm() {
                 </div>
                 <Form.Control asChild>
                     <input
-                        className="inline-flex items-center justify-center bg-black py-2 text-[15px] leading-none text-white outline-none file:border file:mr-4 file:px-2 file:h-8 focus:shadow-[0_0_0_2px]"
+                        className="inline-flex items-center justify-center bg-black py-2 text-[15px] leading-none text-white outline-none file:mr-4 file:h-8 file:border file:px-2 focus:shadow-[0_0_0_2px]"
                         type="file"
                         required
                         accept=".jpg, .png"
+                        onChange={handleFileSize}
                     />
                 </Form.Control>
             </Form.Field>
