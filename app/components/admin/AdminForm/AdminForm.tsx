@@ -49,26 +49,20 @@ function AdminForm() {
         setSlug(slugify(event.target.value))
     }
 
-    const [file, setFile] = useState<File | null>(null)
-
     const MAX_FILE_SIZE = 1 * 1024 * 1024
 
     const handleFileSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.currentTarget.files?.[0]
 
         if (!selectedFile) {
-            setFile(null)
             return
         }
 
         if (selectedFile.size >= MAX_FILE_SIZE) {
             showToast('File is too large. Maximum allowed size is 1MB.')
-            setFile(null)
             event.target.value = ''
             return
         }
-
-        setFile(selectedFile)
     }
 
     return (
@@ -151,7 +145,7 @@ function AdminForm() {
                         required
                         accept=".jpg, .png"
                         onChange={handleFileSize}
-                    />
+                    ></input>
                 </Form.Control>
             </Form.Field>
             <Form.Field className="group grid" name="postAuthor">

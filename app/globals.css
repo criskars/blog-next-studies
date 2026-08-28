@@ -82,6 +82,11 @@ body {
         color: black;
     }
 
+    .mdxeditor-theme
+        .mdxeditor-root-contenteditable
+        .mkxeditor-popup-container {
+        margin: 2px;
+    }
 
     .mdxeditor-theme .mdxeditor-root-contenteditable li[role='checkbox'] {
         display: flex;

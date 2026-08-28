@@ -8,7 +8,7 @@ export default async function AdminNewPost() {
     return (
         <Container>
             <AdminToast>
-                <div className="flex w-full max-w-357.5 flex-col items-end justify-end p-4">
+                <div className="flex w-full max-w-357.5 flex-col items-end justify-end p-4 hover:bg-white hover:text-black">
                     <AdminRefresh />
                     <Link
                         className="m-4 border border-white px-4 hover:bg-white hover:text-black"
