@@ -4,6 +4,7 @@ import { Form } from 'radix-ui'
 import { useState } from 'react'
 import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
 import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
+import { uploadImage } from '@/app/actions/upload-image'
 
 function slugify(value: string) {
     return value
@@ -65,8 +66,18 @@ function AdminForm() {
         }
     }
 
+    const submitForm = (event: React.SubmitEvent<HTMLFormElement>) => {
+        const data = Object.fromEntries(new FormData(event.currentTarget))
+        console.log(data)
+        uploadImage(new FormData(event.currentTarget))
+        event.preventDefault()
+    }
+
     return (
-        <Form.Root className="flex w-full flex-col gap-4 bg-black px-4 max-[610px]:w-full">
+        <Form.Root
+            className="flex w-full flex-col gap-4 bg-black px-4 max-[610px]:w-full"
+            onSubmit={submitForm}
+        >
             <Form.Field className="group grid" name="postTitle">
                 <div className="flex items-baseline justify-between">
                     <Form.Label className={labelStyles}>Post Title</Form.Label>

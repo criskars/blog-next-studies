@@ -69,7 +69,7 @@ body {
         --tw-prose-headings: white;
         --tw-prose-links: #3b82f6;
         --baseText: white;
-        --baseTextContrast: black;
+        --baseTextContrast: white;
         min-height: 234px;
     }
 
@@ -86,6 +86,7 @@ body {
         .mdxeditor-root-contenteditable
         .mkxeditor-popup-container {
         margin: 2px;
+        --baseTextContrast: black;
     }
 
     .mdxeditor-theme .mdxeditor-root-contenteditable li[role='checkbox'] {
@@ -105,4 +106,8 @@ body {
         li[role='checkbox']::after {
         margin-top: 7px;
     }
+}
+
+._selectTrigger_er3ed_308 {
+    color: black;
 }
