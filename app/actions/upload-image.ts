@@ -4,7 +4,7 @@ import { error } from 'console'
 import { mkdir, writeFile } from 'fs/promises'
 import { extname, resolve } from 'path'
 
-type UploadImageActionResult = {
+export type UploadImageActionResult = {
     url: string
     error: string
 }

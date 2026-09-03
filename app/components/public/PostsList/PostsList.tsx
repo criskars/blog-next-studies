@@ -13,11 +13,6 @@ type PostListItems = {
 }
 
 async function PostsList() {
-    // await new Promise((resolve) =>
-    //     setTimeout(() => {
-    //         resolve(null)
-    //     }, 3000)
-    // )
     const posts: PostListItems[] = (await getAllPostsPublic())
         .sort(
             (a, b) =>

@@ -40,7 +40,7 @@ export default async function PostPage({ params }: Props) {
                 />
                 <PostSummary post={postData} as="h2" />
                 <hr></hr>
-                <section className="prose dark:prose-invert prose-a:transition prose-img:mx-auto prose-img:max-w-full prose-pre:max-w-full prose-pre:overflow-x-auto prose-table:block prose-table:overflow-x-auto prose-table:w-full max-w-none min-w-0 overflow-x-hidden break-words">
+                <section className="prose dark:prose-invert prose-a:transition prose-img:mx-auto prose-img:max-w-full prose-pre:max-w-full prose-pre:overflow-x-auto prose-table:block prose-table:overflow-x-auto prose-table:w-full max-w-none min-w-0 overflow-x-hidden wrap-break-word">
                     <SafeMarkdown
                         rawMdxString={postData.content}
                     ></SafeMarkdown>

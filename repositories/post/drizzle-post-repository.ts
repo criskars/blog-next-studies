@@ -42,6 +42,36 @@ export class DrizzlePostRepository implements PostRepository {
         const db = drizzle(process.env.DB_FILE_NAME!)
         await db.delete(postsTable).where(eq(postsTable.id, id))
     }
+
+    async createPost(
+        title: string,
+        content: string,
+        excerpt: string,
+        coverImageUrl: string,
+        slug: string,
+        author: string,
+        published: boolean
+    ): Promise<PostModel> {
+        const postData = {
+            id: crypto.randomUUID(),
+            title: title,
+            excerpt: excerpt,
+            coverImageUrl: coverImageUrl,
+            createdAt: new Date().toISOString(),
+            slug: slug,
+            author: author,
+            published: published,
+            updatedAt: new Date().toISOString(),
+            content: content,
+        }
+
+        const db = drizzle(process.env.DB_FILE_NAME!)
+        const [newPost] = await db
+            .insert(postsTable)
+            .values(postData)
+            .returning()
+        return newPost as PostModel
+    }
 }
 
 export const PostsDatabaseAPI: PostRepository = new DrizzlePostRepository()

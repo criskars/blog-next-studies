@@ -1,10 +1,12 @@
 'use client'
 
 import { Form } from 'radix-ui'
+import { Switch } from 'radix-ui'
 import { useState } from 'react'
 import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
 import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 import { uploadImage } from '@/app/actions/upload-image'
+import { createPost } from '@/app/actions/create-post'
 
 function slugify(value: string) {
     return value
@@ -66,11 +68,41 @@ function AdminForm() {
         }
     }
 
-    const submitForm = (event: React.SubmitEvent<HTMLFormElement>) => {
-        const data = Object.fromEntries(new FormData(event.currentTarget))
+    const [content, setContent] = useState('')
+    const [published, setPublished] = useState(false)
+
+    const submitForm = async (event: React.SubmitEvent<HTMLFormElement>) => {
+        const formData = new FormData(event.currentTarget)
+        const data = Object.fromEntries(formData)
         console.log(data)
-        uploadImage(new FormData(event.currentTarget))
+
         event.preventDefault()
+        try {
+            const uploadResult = await uploadImage(formData)
+            const pathname = new URL(uploadResult.url).pathname
+
+            console.log('uploadResult', uploadResult)
+            console.log(content)
+            console.log(published)
+            console.log('imageSlug', pathname)
+
+            if (uploadResult.error || !uploadResult.url) {
+                showToast(uploadResult.error || 'Error uploading image')
+                return
+            }
+
+            await createPost(
+                data.postTitle as string,
+                content,
+                data.postExcerpt as string,
+                pathname,
+                data.postSlug as string,
+                data.postAuthor as string,
+                published
+            )
+        } catch {
+            showToast('Error creating post')
+        }
     }
 
     return (
@@ -173,7 +205,7 @@ function AdminForm() {
                     <input className={inputStyles} type="text" required />
                 </Form.Control>
             </Form.Field>
-            <Form.Field className="group grid" name="question">
+            <Form.Field className="group grid" name="content">
                 <div className="flex items-baseline justify-between">
                     <Form.Label className={labelStyles}>Content</Form.Label>
                     <Form.Message
@@ -184,7 +216,32 @@ function AdminForm() {
                     </Form.Message>
                 </div>
                 <Form.Control asChild>
-                    <SafeMarkdownEditor rawMdxString="" />
+                    <SafeMarkdownEditor
+                        rawMdxString={content}
+                        onValueChange={setContent}
+                    />
+                </Form.Control>
+            </Form.Field>
+            <Form.Field className="group grid pb-2" name="published">
+                <div className="flex items-baseline justify-between">
+                    <Form.Label className={labelStyles}>Published</Form.Label>
+                </div>
+                <Form.Control asChild>
+                    <Switch.Root
+                        className="relative h-6.25 w-11 cursor-default rounded-full border border-white bg-black outline-none data-[state=checked]:bg-green-500"
+                        id="published"
+                        style={{
+                            WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+                        }}
+                        checked={published}
+                        onCheckedChange={setPublished}
+                    >
+                        <Switch.Thumb
+                            id="published"
+                            aria-labelledby="published-label"
+                            className="translate-x-0.2 block size-5.75 rounded-full bg-white transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-4.75"
+                        />
+                    </Switch.Root>
                 </Form.Control>
             </Form.Field>
             <Form.Submit asChild>

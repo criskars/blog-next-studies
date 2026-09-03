@@ -31,11 +31,13 @@ import { languages } from '@codemirror/language-data'
 
 type SafeMarkdownProps = {
     rawMdxString: string
+    onValueChange?: (value: string) => void
 }
 
-export function SafeMarkdownEditor({ rawMdxString }: SafeMarkdownProps) {
+export function SafeMarkdownEditor({ rawMdxString, onValueChange }: SafeMarkdownProps) {
     return (
         <MDXEditor
+            onChange={onValueChange}
             className="mdxeditor-theme"
             markdown={rawMdxString}
             plugins={[
