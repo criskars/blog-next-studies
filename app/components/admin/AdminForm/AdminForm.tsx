@@ -100,8 +100,10 @@ function AdminForm() {
                 data.postAuthor as string,
                 published
             )
-        } catch {
-            showToast('Error creating post')
+        } catch (error) {
+            showToast(
+                'Error when trying to create post: ' + (error as Error).message
+            )
         }
     }
 

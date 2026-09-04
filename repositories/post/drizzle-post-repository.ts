@@ -2,7 +2,7 @@ import { PostRepository } from '../post-repository'
 import { PostModel } from '@/models/post/post-model'
 import { drizzle } from 'drizzle-orm/libsql'
 import { postsTable } from '@/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, or } from 'drizzle-orm'
 
 export class DrizzlePostRepository implements PostRepository {
     private async readFromDB(): Promise<PostModel[]> {
@@ -66,6 +66,15 @@ export class DrizzlePostRepository implements PostRepository {
         }
 
         const db = drizzle(process.env.DB_FILE_NAME!)
+        const existingPost = await db
+            .select()
+            .from(postsTable)
+            .where(
+                or(eq(postsTable.slug, slug), eq(postsTable.id, postData.id))
+            )
+        if (existingPost.length > 0) {
+            throw new Error('Post with this slug or ID already exists')
+        }
         const [newPost] = await db
             .insert(postsTable)
             .values(postData)
