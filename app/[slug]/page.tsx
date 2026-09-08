@@ -32,7 +32,7 @@ export default async function PostPage({ params }: Props) {
             <article className="group flex w-full min-w-0 flex-col gap-4 p-4">
                 <PostImage
                     alt={postData.title}
-                    coverImageUrl={postData.coverImageUrl}
+                    coverImageSlug={postData.coverImageSlug}
                     width={1200}
                     height={720}
                     priority={false}

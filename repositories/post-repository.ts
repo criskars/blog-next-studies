@@ -5,13 +5,11 @@ export interface PostRepository {
     findAllPublic(): Promise<PostModel[]>
     findBySlugPublic(slug: string): Promise<PostModel>
     deletePost(id: string): Promise<void>
-    createPost(
-        title: string,
-        content: string,
-        excerpt: string,
-        coverImageUrl: string,
-        slug: string,
-        author: string,
-        published: boolean
-    ): Promise<PostModel>
+    createPost(data: {
+        title: string
+        content: string
+        excerpt: string
+        coverImageSlug: string
+        slug: string
+    }): Promise<PostModel>
 }

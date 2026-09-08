@@ -7,17 +7,7 @@ import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
 import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 import { uploadImage } from '@/app/actions/upload-image'
 import { createPost } from '@/app/actions/create-post'
-
-function slugify(value: string) {
-    return value
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '-')
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, '-')
-        .replace(/\s/g, '-')
-        .replace(/-/g, '-')
-}
+import { slugify } from '@/app/utils/slugify'
 
 function AdminForm() {
     const { showToast } = useAdminToast()

@@ -43,26 +43,26 @@ export class DrizzlePostRepository implements PostRepository {
         await db.delete(postsTable).where(eq(postsTable.id, id))
     }
 
-    async createPost(
-        title: string,
-        content: string,
-        excerpt: string,
-        coverImageUrl: string,
-        slug: string,
-        author: string,
+    async createPost(data: {
+        title: string
+        content: string
+        excerpt: string
+        coverImageSlug: string
+        slug: string
+        author: string
         published: boolean
-    ): Promise<PostModel> {
+    }): Promise<PostModel> {
         const postData = {
             id: crypto.randomUUID(),
-            title: title,
-            excerpt: excerpt,
-            coverImageUrl: coverImageUrl,
+            title: data.title,
+            excerpt: data.excerpt,
+            coverImageSlug: data.coverImageSlug,
             createdAt: new Date().toISOString(),
-            slug: slug,
-            author: author,
-            published: published,
+            slug: data.slug,
+            author: data.author,
+            published: data.published,
             updatedAt: new Date().toISOString(),
-            content: content,
+            content: data.content,
         }
 
         const db = drizzle(process.env.DB_FILE_NAME!)
@@ -70,7 +70,10 @@ export class DrizzlePostRepository implements PostRepository {
             .select()
             .from(postsTable)
             .where(
-                or(eq(postsTable.slug, slug), eq(postsTable.id, postData.id))
+                or(
+                    eq(postsTable.slug, postData.slug),
+                    eq(postsTable.id, postData.id)
+                )
             )
         if (existingPost.length > 0) {
             throw new Error('Post with this slug or ID already exists')

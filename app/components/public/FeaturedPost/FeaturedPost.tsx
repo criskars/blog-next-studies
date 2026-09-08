@@ -7,7 +7,7 @@ type PostListItem = {
     createdAt: string
     slug: string
     excerpt: string
-    coverImageUrl: string
+    coverImageSlug: string
     author: string
 }
 
@@ -26,7 +26,7 @@ export async function FeaturedPost() {
         createdAt: post.createdAt,
         slug: post.slug,
         excerpt: post.excerpt,
-        coverImageUrl: post.coverImageUrl,
+        coverImageSlug: post.coverImageSlug,
         author: post.author,
     }
 
@@ -35,7 +35,7 @@ export async function FeaturedPost() {
             <PostImage
                 alt={recentPost.title}
                 slug={recentPost.slug}
-                coverImageUrl={recentPost.coverImageUrl}
+                coverImageSlug={recentPost.coverImageSlug}
                 width={1200}
                 height={720}
                 priority={true}

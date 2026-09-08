@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 type PostImageProps = {
     slug: string
-    coverImageUrl: string
+    coverImageSlug: string
     alt: string
     width: number
     height: number
@@ -11,7 +11,7 @@ type PostImageProps = {
 }
 
 export function PostImage({
-    coverImageUrl,
+    coverImageSlug,
     alt,
     width,
     height,
@@ -22,7 +22,7 @@ export function PostImage({
         <Link className="h-full w-full overflow-hidden rounded-xl" href={slug}>
             <Image
                 className="h-full w-full object-cover object-center transition hover:scale-105"
-                src={coverImageUrl}
+                src={coverImageSlug}
                 width={width}
                 height={height}
                 alt={alt}

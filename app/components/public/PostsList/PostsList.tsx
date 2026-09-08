@@ -24,7 +24,7 @@ async function PostsList() {
             id: post.id,
             title: post.title,
             excerpt: post.excerpt,
-            src: post.coverImageUrl,
+            src: post.coverImageSlug,
             createdAt: post.createdAt,
             slug: post.slug,
             author: post.author,
@@ -36,7 +36,7 @@ async function PostsList() {
                 <div key={post.id} className="group m-4 flex flex-col gap-4">
                     <PostImage
                         alt={post.title}
-                        coverImageUrl={post.src}
+                        coverImageSlug={post.src}
                         width={1200}
                         height={720}
                         priority={false}

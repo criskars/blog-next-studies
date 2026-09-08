@@ -24,7 +24,7 @@ async function PostsListAdmin() {
             id: post.id,
             title: post.title,
             excerpt: post.excerpt,
-            src: post.coverImageUrl,
+            src: post.coverImageSlug,
             createdAt: post.createdAt,
             slug: post.slug,
             author: post.author,
@@ -32,7 +32,7 @@ async function PostsListAdmin() {
         }))
 
     return (
-        <div className="flex max-w-357.5 flex-col items-end justify-center w-full">
+        <div className="flex w-full max-w-357.5 flex-col items-end justify-center">
             <Link
                 className="m-4 border border-white px-4 hover:bg-white hover:text-black"
                 href="/admin/posts/new"

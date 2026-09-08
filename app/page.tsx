@@ -16,7 +16,7 @@ export default async function Home() {
     //     id: crypto.randomUUID(),
     //     title: 'Teste 1',
     //     excerpt: 'post.excerpt',
-    //     coverImageUrl: '/images/bryen_0.png',
+    //     coverImageSlug: '/images/bryen_0.png',
     //     createdAt: new Date().toISOString(),
     //     slug: 'jghsudjdtykdtkitiodtot7driuhseoshgo',
     //     author: 'post.author',
