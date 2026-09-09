@@ -57,57 +57,52 @@ body {
         min-width: 0;
         max-width: none;
     }
-
-    .mdxeditor-theme .mdxeditor-toolbar {
-        --radius-medium: 0;
-        width: 100%;
-    }
-
-    .mdxeditor-theme .mdxeditor-root-contenteditable {
-        @apply prose prose-neutral;
-        --baseTextContrast: white;
-        --tw-prose-headings: white;
-        --tw-prose-links: #3b82f6;
-        --baseText: white;
-        --baseTextContrast: white;
-        min-height: 234px;
-    }
-
-    .mdxeditor-theme .mdxeditor-root-contenteditable blockquote {
-        --baseText: white;
-    }
-
-    .mdxeditor-theme .mdxeditor-root-contenteditable button {
-        --baseText: black;
-        color: black;
-    }
-
-    .mdxeditor-theme
-        .mdxeditor-root-contenteditable
-        .mkxeditor-popup-container {
-        margin: 2px;
-        --baseTextContrast: black;
-    }
-
-    .mdxeditor-theme .mdxeditor-root-contenteditable li[role='checkbox'] {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .mdxeditor-theme
-        .mdxeditor-root-contenteditable
-        li[role='checkbox']::before {
-        margin-top: 6px;
-    }
-
-    .mdxeditor-theme
-        .mdxeditor-root-contenteditable
-        li[role='checkbox']::after {
-        margin-top: 7px;
-    }
 }
 
 ._selectTrigger_er3ed_308 {
     color: black;
+}
+
+.mdx-content {
+    @apply prose prose-invert max-w-none;
+    min-height: 234px;
+    width: 100%;
+    box-sizing: border-box;
+
+    --tw-prose-headings: white;
+    --tw-prose-links: #3b82f6;
+    --tw-prose-body: white;
+    --tw-prose-bold: white;
+    --tw-prose-bullets: white;
+    --tw-prose-counters: white;
+}
+
+.mdx-content button {
+    --baseText: black;
+    color: white;
+}
+
+.mdx-content li[role='checkbox'] {
+    position: relative;
+    padding-left: 1.75rem;
+}
+
+.mdx-content li[role='checkbox']::before {
+    margin-top: 4px;
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+}
+
+.mdx-content li[role='checkbox']::after {
+    margin-top: 7px;
+}
+
+.mdxeditor-popup-container {
+    margin: 2px;
+}
+
+.mdxeditor-theme .mdxeditor-root-contenteditable {
+    min-height: 234px;
+    box-sizing: border-box;
 }

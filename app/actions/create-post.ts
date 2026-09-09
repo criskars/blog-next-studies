@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { PostsDatabaseAPI } from '@/repositories/post/drizzle-post-repository'
 import { z } from 'zod'
 import { slugify } from '@/app/utils/slugify'
@@ -30,7 +29,11 @@ const CreatePostSchema = z.object({
         .trim()
         .min(10, 'Excerpt too short')
         .max(300, 'Excerpt too long'),
-    coverImageSlug: slugSchema,
+    coverImageSlug: z
+        .string()
+        .trim()
+        .min(10, 'Image slug too short')
+        .max(300, 'slug too long'),
     slug: slugSchema,
     author: z
         .string()
@@ -40,6 +43,12 @@ const CreatePostSchema = z.object({
     published: z.boolean(),
 })
 
+type CreatePostActionState = {
+    success: boolean
+    message: string
+    fieldErrors?: Record<string, string[] | undefined>
+}
+
 export async function createPost(
     title: string,
     content: string,
@@ -48,7 +57,7 @@ export async function createPost(
     slug: string,
     author: string,
     published: boolean
-) {
+): Promise<CreatePostActionState> {
     const parsedData = CreatePostSchema.safeParse({
         title,
         content,
@@ -59,15 +68,28 @@ export async function createPost(
         published,
     })
     if (!parsedData.success) {
-        return z.flattenError(parsedData.error).fieldErrors
+        console.error('Validation error:', parsedData.error)
+        console.log('Parsed data:', parsedData)
+        console.log('Parsed data error:', z.flattenError(parsedData.error))
+        return {
+            success: false,
+            message: 'Error while creating post.',
+            fieldErrors: z.flattenError(parsedData.error).fieldErrors,
+        }
     }
 
     try {
         await PostsDatabaseAPI.createPost(parsedData.data)
         revalidatePath('/admin/posts')
-    } catch (error) {
-        throw new Error('Failed to create post', { cause: error })
+        return {
+            success: true,
+            message: 'Post created successfully.',
+        }
+    } catch {
+        return {
+            success: false,
+            message: 'Error while creating post.',
+            fieldErrors: {},
+        }
     }
-
-    redirect('/admin/posts')
 }

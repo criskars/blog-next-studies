@@ -81,7 +81,7 @@ function AdminForm() {
                 return
             }
 
-            await createPost(
+            const newPost = await createPost(
                 data.postTitle as string,
                 content,
                 data.postExcerpt as string,
@@ -90,6 +90,18 @@ function AdminForm() {
                 data.postAuthor as string,
                 published
             )
+
+            if (!newPost.success) {
+                const errors = Object.values(newPost.fieldErrors ?? {})
+                    .flat()
+                    .filter(Boolean)
+                    .join(', ')
+
+                showToast(newPost.message + (errors ? `: ${errors}` : ''))
+                console.log(newPost.fieldErrors)
+                return
+            }
+            showToast(newPost.message)
         } catch (error) {
             showToast(
                 'Error when trying to create post: ' + (error as Error).message

@@ -34,11 +34,15 @@ type SafeMarkdownProps = {
     onValueChange?: (value: string) => void
 }
 
-export function SafeMarkdownEditor({ rawMdxString, onValueChange }: SafeMarkdownProps) {
+export function SafeMarkdownEditor({
+    rawMdxString,
+    onValueChange,
+}: SafeMarkdownProps) {
     return (
         <MDXEditor
             onChange={onValueChange}
             className="mdxeditor-theme"
+            contentEditableClassName="mdx-content"
             markdown={rawMdxString}
             plugins={[
                 toolbarPlugin({
