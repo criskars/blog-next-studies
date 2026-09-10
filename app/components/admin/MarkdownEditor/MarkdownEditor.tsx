@@ -44,6 +44,8 @@ export function SafeMarkdownEditor({
             className="mdxeditor-theme"
             contentEditableClassName="mdx-content"
             markdown={rawMdxString}
+            placeholder="Write your content here..."
+            autoFocus={false}
             plugins={[
                 toolbarPlugin({
                     toolbarContents: () => (

@@ -84,7 +84,10 @@ async function PostsListAdmin() {
                                     {post.published ? 'Published' : 'Draft'}
                                 </td>
                                 <td className="border-y p-4 text-center">
-                                    <AdminDropdownMenu id={post.id} />
+                                    <AdminDropdownMenu
+                                        id={post.id}
+                                        slug={post.slug}
+                                    />
                                 </td>
                             </tr>
                         ))}

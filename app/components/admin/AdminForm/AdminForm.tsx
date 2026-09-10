@@ -2,14 +2,19 @@
 
 import { Form } from 'radix-ui'
 import { Switch } from 'radix-ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
 import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 import { uploadImage } from '@/app/actions/upload-image'
 import { createPost } from '@/app/actions/create-post'
 import { slugify } from '@/app/utils/slugify'
+import { searchSlug } from '@/app/actions/search-slug'
 
-function AdminForm() {
+type AdminFormProps = {
+    slugParam?: string
+}
+
+function AdminForm({ slugParam }: AdminFormProps) {
     const { showToast } = useAdminToast()
 
     const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -25,8 +30,20 @@ function AdminForm() {
         'text-[15px] leading-8 font-medium text-white group-focus-within:font-semibold'
 
     const [title, setTitle] = useState('')
+
     const [slug, setSlug] = useState('')
+
     const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
+
+    useEffect(() => {
+        async function loadPost() {
+            if (!slugParam) return
+            const post = await searchSlug(slugParam)
+            setTitle(post.title)
+            setSlug(post.slug)
+        }
+        loadPost()
+    }, [slugParam])
 
     function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const nextTitle = event.target.value
@@ -131,6 +148,7 @@ function AdminForm() {
                         required
                         value={title}
                         onChange={handleTitleChange}
+                        placeholder="Enter your post title"
                     />
                 </Form.Control>
             </Form.Field>
@@ -158,6 +176,7 @@ function AdminForm() {
                         required
                         value={slug}
                         onChange={handleSlugChange}
+                        placeholder="Enter a URL-friendly slug"
                     />
                 </Form.Control>
             </Form.Field>
@@ -172,7 +191,12 @@ function AdminForm() {
                     </Form.Message>
                 </div>
                 <Form.Control asChild>
-                    <input className={inputStyles} type="text" required />
+                    <input
+                        className={inputStyles}
+                        type="text"
+                        required
+                        placeholder="Enter a brief description of your post"
+                    />
                 </Form.Control>
             </Form.Field>
             <Form.Field className="group grid" name="postCoverImage">
@@ -206,7 +230,12 @@ function AdminForm() {
                     </Form.Message>
                 </div>
                 <Form.Control asChild>
-                    <input className={inputStyles} type="text" required />
+                    <input
+                        className={inputStyles}
+                        type="text"
+                        required
+                        placeholder="Enter the author's name"
+                    />
                 </Form.Control>
             </Form.Field>
             <Form.Field className="group grid" name="content">

@@ -105,4 +105,10 @@ body {
 .mdxeditor-theme .mdxeditor-root-contenteditable {
     min-height: 234px;
     box-sizing: border-box;
+    --radius-medium: 0px;
+}
+
+.mdxeditor-theme .mdxeditor-toolbar {
+    --radius-medium: 0;
+    width: 100%;
 }

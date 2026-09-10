@@ -11,9 +11,10 @@ import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 
 type AdminDropdownMenuProps = {
     id: string
+    slug: string
 }
 
-const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
+const AdminDropdownMenu = ({ id, slug }: AdminDropdownMenuProps) => {
     const { showToast } = useAdminToast()
     const [openModal, setOpenModal] = React.useState(false)
     const [isDeleting, startDeleting] = React.useState(false)
@@ -49,7 +50,7 @@ const AdminDropdownMenu = ({ id }: AdminDropdownMenuProps) => {
                         sideOffset={5}
                     >
                         <DropdownMenu.Item className="group relative flex h-6.25 items-center pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black">
-                            <Link href={`/admin/posts/${id}`}>Edit</Link>
+                            <Link href={`/admin/posts/${slug}`}>Edit</Link>
                         </DropdownMenu.Item>
                         <DropdownMenu.Item
                             className="group relative flex h-6.25 items-center pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black"

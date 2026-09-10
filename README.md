@@ -39,3 +39,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 [ ] Migrate the search form into a separate component
 [ ] Implement it on the header, showing search results in a modal box below the bar
+[ ] Implement the edit post page, using the same form component, but making a update request over the opened demo ID
+[ ] start implementing the login page
