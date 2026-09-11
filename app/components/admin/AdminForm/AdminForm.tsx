@@ -30,10 +30,12 @@ function AdminForm({ slugParam }: AdminFormProps) {
         'text-[15px] leading-8 font-medium text-white group-focus-within:font-semibold'
 
     const [title, setTitle] = useState('')
-
     const [slug, setSlug] = useState('')
-
     const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
+    const [excerpt, setExcerpt] = useState('')
+    const [author, setAuthor] = useState('')
+    const [content, setContent] = useState('')
+    const [published, setPublished] = useState(false)
 
     useEffect(() => {
         async function loadPost() {
@@ -41,6 +43,10 @@ function AdminForm({ slugParam }: AdminFormProps) {
             const post = await searchSlug(slugParam)
             setTitle(post.title)
             setSlug(post.slug)
+            setExcerpt(post.excerpt)
+            setAuthor(post.author)
+            setContent(post.content)
+            setPublished(post.published)
         }
         loadPost()
     }, [slugParam])
@@ -74,9 +80,6 @@ function AdminForm({ slugParam }: AdminFormProps) {
             return
         }
     }
-
-    const [content, setContent] = useState('')
-    const [published, setPublished] = useState(false)
 
     const submitForm = async (event: React.SubmitEvent<HTMLFormElement>) => {
         const formData = new FormData(event.currentTarget)
@@ -196,6 +199,8 @@ function AdminForm({ slugParam }: AdminFormProps) {
                         type="text"
                         required
                         placeholder="Enter a brief description of your post"
+                        value={excerpt}
+                        onChange={(e) => setExcerpt(e.target.value)}
                     />
                 </Form.Control>
             </Form.Field>
@@ -235,6 +240,8 @@ function AdminForm({ slugParam }: AdminFormProps) {
                         type="text"
                         required
                         placeholder="Enter the author's name"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
                     />
                 </Form.Control>
             </Form.Field>

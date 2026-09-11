@@ -26,8 +26,10 @@ import {
     ConditionalContents,
     ChangeCodeMirrorLanguage,
     InsertCodeBlock,
+    type MDXEditorMethods,
 } from '@mdxeditor/editor'
 import { languages } from '@codemirror/language-data'
+import { useEffect, useRef } from 'react'
 
 type SafeMarkdownProps = {
     rawMdxString: string
@@ -38,6 +40,11 @@ export function SafeMarkdownEditor({
     rawMdxString,
     onValueChange,
 }: SafeMarkdownProps) {
+    const editorRef = useRef<MDXEditorMethods>(null)
+
+    useEffect(() => {
+        editorRef.current?.setMarkdown(rawMdxString)
+    }, [rawMdxString])
     return (
         <MDXEditor
             onChange={onValueChange}
