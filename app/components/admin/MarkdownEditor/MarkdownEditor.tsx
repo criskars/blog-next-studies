@@ -47,6 +47,7 @@ export function SafeMarkdownEditor({
     }, [rawMdxString])
     return (
         <MDXEditor
+            ref={editorRef}
             onChange={onValueChange}
             className="mdxeditor-theme"
             contentEditableClassName="mdx-content"

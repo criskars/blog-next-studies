@@ -84,6 +84,19 @@ export class DrizzlePostRepository implements PostRepository {
             .returning()
         return newPost as PostModel
     }
+
+    async updatePost(
+        slug: string,
+        data: Partial<PostModel>
+    ): Promise<PostModel> {
+        const db = drizzle(process.env.DB_FILE_NAME!)
+        const [updatedPost] = await db
+            .update(postsTable)
+            .set(data)
+            .where(eq(postsTable.slug, slug))
+            .returning()
+        return updatedPost as PostModel
+    }
 }
 
 export const PostsDatabaseAPI: PostRepository = new DrizzlePostRepository()

@@ -9,6 +9,7 @@ import { uploadImage } from '@/app/actions/upload-image'
 import { createPost } from '@/app/actions/create-post'
 import { slugify } from '@/app/utils/slugify'
 import { searchSlug } from '@/app/actions/search-slug'
+import { updatePost } from '@/app/actions/update-post'
 
 type AdminFormProps = {
     slugParam?: string
@@ -24,7 +25,7 @@ function AdminForm({ slugParam }: AdminFormProps) {
     }
 
     const inputStyles =
-        'selection:bg-blackA6 box-border inline-flex h-8 w-full appearance-none items-center justify-center bg-black p-2 text-[15px] leading-none text-white shadow-[0_0_0_1px] outline-none selection:bg-white selection:text-black focus:shadow-[0_0_0_2px]'
+        'selection:bg-black box-border inline-flex h-8 w-full appearance-none items-center justify-center bg-black p-2 text-[15px] leading-none text-white shadow-[0_0_0_1px] outline-none selection:bg-white selection:text-black focus:shadow-[0_0_0_2px] disabled:cursor-not-allowed disabled:opacity-50 disabled:selection:bg-black disabled:selection:text-white'
 
     const labelStyles =
         'text-[15px] leading-8 font-medium text-white group-focus-within:font-semibold'
@@ -84,44 +85,67 @@ function AdminForm({ slugParam }: AdminFormProps) {
     const submitForm = async (event: React.SubmitEvent<HTMLFormElement>) => {
         const formData = new FormData(event.currentTarget)
         const data = Object.fromEntries(formData)
-        console.log(data)
+        // console.log(data)
 
         event.preventDefault()
         try {
             const uploadResult = await uploadImage(formData)
             const pathname = new URL(uploadResult.url).pathname
 
-            console.log('uploadResult', uploadResult)
-            console.log(content)
-            console.log(published)
-            console.log('imageSlug', pathname)
+            // console.log('uploadResult', uploadResult)
+            // console.log(content)
+            // console.log(published)
+            // console.log('imageSlug', pathname)
 
             if (uploadResult.error || !uploadResult.url) {
                 showToast(uploadResult.error || 'Error uploading image')
                 return
             }
 
-            const newPost = await createPost(
-                data.postTitle as string,
-                content,
-                data.postExcerpt as string,
-                pathname,
-                data.postSlug as string,
-                data.postAuthor as string,
-                published
-            )
+            if (!slugParam) {
+                const newPost = await createPost(
+                    data.postTitle as string,
+                    content,
+                    data.postExcerpt as string,
+                    pathname,
+                    data.postSlug as string,
+                    data.postAuthor as string,
+                    published
+                )
 
-            if (!newPost.success) {
-                const errors = Object.values(newPost.fieldErrors ?? {})
-                    .flat()
-                    .filter(Boolean)
-                    .join(', ')
+                if (!newPost.success) {
+                    const errors = Object.values(newPost.fieldErrors ?? {})
+                        .flat()
+                        .filter(Boolean)
+                        .join(', ')
 
-                showToast(newPost.message + (errors ? `: ${errors}` : ''))
-                console.log(newPost.fieldErrors)
-                return
+                    showToast(newPost.message + (errors ? `: ${errors}` : ''))
+                    // console.log(newPost.fieldErrors)
+                    return
+                }
+                showToast(newPost.message)
+            } else {
+                const updateResult = await updatePost(
+                    slugParam as string,
+                    data.postTitle as string,
+                    content,
+                    data.postExcerpt as string,
+                    pathname,
+                    data.postAuthor as string,
+                    published
+                )
+                if (!updateResult.success) {
+                    const errors = Object.values(updateResult.fieldErrors ?? {})
+                        .flat()
+                        .filter(Boolean)
+                        .join(', ')
+                    showToast(
+                        updateResult.message + (errors ? `: ${errors}` : '')
+                    )
+                    return
+                }
+                showToast(updateResult.message)
             }
-            showToast(newPost.message)
         } catch (error) {
             showToast(
                 'Error when trying to create post: ' + (error as Error).message
@@ -180,6 +204,7 @@ function AdminForm({ slugParam }: AdminFormProps) {
                         value={slug}
                         onChange={handleSlugChange}
                         placeholder="Enter a URL-friendly slug"
+                        disabled={Boolean(slugParam)}
                     />
                 </Form.Control>
             </Form.Field>

@@ -12,4 +12,5 @@ export interface PostRepository {
         coverImageSlug: string
         slug: string
     }): Promise<PostModel>
+    updatePost(slug: string, data: Partial<PostModel>): Promise<PostModel>
 }
