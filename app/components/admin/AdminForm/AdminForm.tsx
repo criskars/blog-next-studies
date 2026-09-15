@@ -3,6 +3,7 @@
 import { Form } from 'radix-ui'
 import { Switch } from 'radix-ui'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { SafeMarkdownEditor } from '../MarkdownEditor/MarkdownEditor'
 import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 import { uploadImage } from '@/app/actions/upload-image'
@@ -10,6 +11,7 @@ import { createPost } from '@/app/actions/create-post'
 import { slugify } from '@/app/utils/slugify'
 import { searchSlug } from '@/app/actions/search-slug'
 import { updatePost } from '@/app/actions/update-post'
+import PostImage from '../../public/PostImage/PostImage'
 
 type AdminFormProps = {
     slugParam?: string
@@ -17,6 +19,7 @@ type AdminFormProps = {
 
 function AdminForm({ slugParam }: AdminFormProps) {
     const { showToast } = useAdminToast()
+    const router = useRouter()
 
     const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
@@ -34,9 +37,11 @@ function AdminForm({ slugParam }: AdminFormProps) {
     const [slug, setSlug] = useState('')
     const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
     const [excerpt, setExcerpt] = useState('')
+    const [imageSlug, setImageSlug] = useState('')
     const [author, setAuthor] = useState('')
     const [content, setContent] = useState('')
     const [published, setPublished] = useState(false)
+    const [shouldRedirect, setShouldRedirect] = useState(false)
 
     useEffect(() => {
         async function loadPost() {
@@ -45,12 +50,23 @@ function AdminForm({ slugParam }: AdminFormProps) {
             setTitle(post.title)
             setSlug(post.slug)
             setExcerpt(post.excerpt)
+            setImageSlug(post.imageSlug)
             setAuthor(post.author)
             setContent(post.content)
             setPublished(post.published)
         }
         loadPost()
     }, [slugParam])
+
+    useEffect(() => {
+        if (shouldRedirect) {
+            const timer = setTimeout(() => {
+                router.push('/admin/posts')
+            }, 3000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [shouldRedirect, router])
 
     function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const nextTitle = event.target.value
@@ -85,29 +101,36 @@ function AdminForm({ slugParam }: AdminFormProps) {
     const submitForm = async (event: React.SubmitEvent<HTMLFormElement>) => {
         const formData = new FormData(event.currentTarget)
         const data = Object.fromEntries(formData)
-        // console.log(data)
 
         event.preventDefault()
         try {
-            const uploadResult = await uploadImage(formData)
-            const pathname = new URL(uploadResult.url).pathname
+            let finalImageSlug: string
+            const fileInput =
+                event.currentTarget.querySelector<HTMLInputElement>(
+                    'input[type="file"]'
+                )
+            const hasNewFile = fileInput?.files && fileInput.files.length > 0
 
-            // console.log('uploadResult', uploadResult)
-            // console.log(content)
-            // console.log(published)
-            // console.log('imageSlug', pathname)
+            if (hasNewFile) {
+                const uploadResult = await uploadImage(formData)
 
-            if (uploadResult.error || !uploadResult.url) {
-                showToast(uploadResult.error || 'Error uploading image')
-                return
+                if (uploadResult.error || !uploadResult.url) {
+                    showToast(uploadResult.error || 'Error uploading image')
+                    return
+                }
+
+                const pathname = new URL(uploadResult.url).pathname
+                finalImageSlug = pathname
+                // setImageSlug(finalImageSlug)
+            } else {
+                finalImageSlug = imageSlug
             }
-
             if (!slugParam) {
                 const newPost = await createPost(
                     data.postTitle as string,
                     content,
                     data.postExcerpt as string,
-                    pathname,
+                    finalImageSlug,
                     data.postSlug as string,
                     data.postAuthor as string,
                     published
@@ -120,17 +143,17 @@ function AdminForm({ slugParam }: AdminFormProps) {
                         .join(', ')
 
                     showToast(newPost.message + (errors ? `: ${errors}` : ''))
-                    // console.log(newPost.fieldErrors)
                     return
                 }
                 showToast(newPost.message)
+                setShouldRedirect(true)
             } else {
                 const updateResult = await updatePost(
                     slugParam as string,
                     data.postTitle as string,
                     content,
                     data.postExcerpt as string,
-                    pathname,
+                    finalImageSlug,
                     data.postAuthor as string,
                     published
                 )
@@ -145,6 +168,7 @@ function AdminForm({ slugParam }: AdminFormProps) {
                     return
                 }
                 showToast(updateResult.message)
+                setShouldRedirect(true)
             }
         } catch (error) {
             showToast(
@@ -243,12 +267,31 @@ function AdminForm({ slugParam }: AdminFormProps) {
                     <input
                         className="inline-flex items-center justify-center bg-black py-2 text-[15px] leading-none text-white outline-none file:mr-4 file:h-8 file:border file:px-2 focus:shadow-[0_0_0_2px]"
                         type="file"
-                        required
+                        required={!slugParam}
                         accept=".jpg, .png"
                         onChange={handleFileSize}
                     ></input>
                 </Form.Control>
             </Form.Field>
+            {imageSlug && (
+                <Form.Field className="group grid" name="viewCoverImage">
+                    <div className="flex items-baseline justify-between">
+                        <Form.Label className={labelStyles}>
+                            Cover image preview
+                        </Form.Label>
+                    </div>
+                    <Form.Control asChild>
+                        <PostImage
+                            alt={title}
+                            coverImageSlug={imageSlug}
+                            width={600}
+                            height={300}
+                            priority={false}
+                            slug={slug}
+                        />
+                    </Form.Control>
+                </Form.Field>
+            )}
             <Form.Field className="group grid" name="postAuthor">
                 <div className="flex items-baseline justify-between">
                     <Form.Label className={labelStyles}>Author</Form.Label>
@@ -311,7 +354,7 @@ function AdminForm({ slugParam }: AdminFormProps) {
             </Form.Field>
             <Form.Submit asChild>
                 <button className="box-border inline-flex h-8 w-full items-center justify-center bg-white leading-none font-medium text-black hover:border hover:border-white hover:bg-black hover:text-white focus:bg-black focus:text-white focus:shadow-[0_0_0_2px]">
-                    Create post
+                    {Boolean(slugParam) ? 'Update Post' : 'Create Post'}
                 </button>
             </Form.Submit>
         </Form.Root>

@@ -15,22 +15,22 @@ export async function uploadImage(
     const makeResult = ({ url = '', error = '' }) => ({ url, error })
 
     if (!(formData instanceof FormData)) {
-        return makeResult({ error: 'Dados inválidos' })
+        return makeResult({ error: 'Invalid data' })
     }
 
     const file = formData.get('postCoverImage')
 
     if (!(file instanceof File)) {
-        return makeResult({ error: 'Arquivo inválido' })
+        return makeResult({ error: 'Invalid file' })
     }
 
     const uploadMaxSize = 1 * 1024 * 1024
     if (file.size > uploadMaxSize) {
-        return makeResult({ error: 'Arquivo muito grande' })
+        return makeResult({ error: 'File too large' })
     }
 
     if (!file.type.startsWith('image/')) {
-        return makeResult({ error: 'Imagem inválida' })
+        return makeResult({ error: 'Invalid image' })
     }
 
     const imageExtension = extname(file.name)
