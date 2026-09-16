@@ -273,7 +273,7 @@ function AdminForm({ slugParam }: AdminFormProps) {
                     ></input>
                 </Form.Control>
             </Form.Field>
-            {imageSlug && (
+            {slugParam && imageSlug && (
                 <Form.Field className="group grid" name="viewCoverImage">
                     <div className="flex items-baseline justify-between">
                         <Form.Label className={labelStyles}>

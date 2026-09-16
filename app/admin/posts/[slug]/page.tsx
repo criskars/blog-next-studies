@@ -14,9 +14,6 @@ export default async function AdminPostDetails({ params }: Props) {
     return (
         <Container>
             <AdminRefresh />
-            <p className="px-4 text-lg font-semibold">
-                Admin Post Details for Slug: {slug}
-            </p>
             <AdminToast>
                 <div className="flex w-full max-w-357.5 flex-col items-end justify-end p-4">
                     <AdminRefresh />
