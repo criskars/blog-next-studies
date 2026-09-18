@@ -78,7 +78,6 @@ export function LoginForm() {
                         type="hidden"
                         name="password"
                         value={password}
-                        required
                         readOnly
                     />
                 </Form.Control>
