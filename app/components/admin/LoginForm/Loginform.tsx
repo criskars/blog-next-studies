@@ -58,7 +58,8 @@ export function LoginForm() {
                         type="email"
                         required
                         placeholder="Enter your email"
-                        value={state.email}
+                        defaultValue={state.email}
+                        key={state.email}
                     />
                 </Form.Control>
             </Form.Field>
