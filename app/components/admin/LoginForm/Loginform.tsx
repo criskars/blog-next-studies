@@ -6,7 +6,6 @@ import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 import { Form } from 'radix-ui'
 import { unstable_PasswordToggleField as PasswordToggleField } from 'radix-ui'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
-import { useRouter } from 'next/navigation'
 
 export function LoginForm() {
     const [password, setPassword] = useState('')

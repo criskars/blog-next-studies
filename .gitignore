@@ -45,3 +45,6 @@ next-env.d.ts
 
 # uploaded files
 /public/uploads
+
+# script to generate password hash
+app/utils/generate-hashed-password.ts

@@ -1,5 +1,8 @@
 'use server'
 
+import { verifyPassword } from '@/app/lib/login/manage-login'
+import { redirect } from 'next/navigation'
+
 type LoginActionState = {
     email: string
     error: string
@@ -20,7 +23,10 @@ export async function loginAction(state: LoginActionState, formData: FormData) {
     const password = formData.get('password')?.toString() || ''
 
     const isEmailValid = email === process.env.LOGIN_EMAIL
-    const isPasswordValid = password === process.env.LOGIN_PASSWORD
+    const isPasswordValid = await verifyPassword(
+        password,
+        process.env.LOGIN_PASSWORD || ''
+    )
 
     if (!isEmailValid || !isPasswordValid) {
         return {
@@ -29,8 +35,5 @@ export async function loginAction(state: LoginActionState, formData: FormData) {
         }
     }
 
-    return {
-        email: '',
-        error: '',
-    }
+    redirect('/admin/posts')
 }
