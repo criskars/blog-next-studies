@@ -1,6 +1,6 @@
 'use server'
 
-import { verifyPassword } from '@/app/lib/login/manage-login'
+import { createLoginCookie, verifyPassword } from '@/app/lib/login/manage-login'
 import { redirect } from 'next/navigation'
 
 type LoginActionState = {
@@ -35,5 +35,6 @@ export async function loginAction(state: LoginActionState, formData: FormData) {
         }
     }
 
+    await createLoginCookie(email)
     redirect('/admin/posts')
 }
