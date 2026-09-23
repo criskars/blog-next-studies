@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import { SignJWT, jwtVerify } from 'jose'
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY || 'default-secret-key'
 const jwtEncodeKey = new TextEncoder().encode(jwtSecretKey)
@@ -12,24 +13,15 @@ const loginExpirationString = process.env.LOGIN_EXPIRATION_STRING || '1d'
 const cookieName = process.env.LOGIN_COOKIE_NAME || 'loginSession'
 
 export async function createLoginCookie(email: string) {
-    const cryptoKey = await crypto.subtle.importKey(
-        'raw',
-        jwtEncodeKey,
-        { name: 'HMAC', hash: 'SHA-256' },
-        false,
-        ['sign']
-    )
-    const jwtSign = await crypto.subtle.sign(
-        { name: 'HMAC', hash: 'SHA-256' },
-        cryptoKey,
-        new TextEncoder().encode(email + ' - ' + loginExpirationString)
-    )
-
-    // not full token for now, just the signature part, since we are not using a full JWT structure
-    const token = Buffer.from(jwtSign).toString('base64')
+    console.log('Bytes for key:', Buffer.byteLength(jwtSecretKey, 'utf-8'))
+    const jwt = await new SignJWT({ email })
+        .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+        .setIssuedAt()
+        .setExpirationTime(loginExpirationString)
+        .sign(jwtEncodeKey)
 
     const cookieStore = await cookies()
-    cookieStore.set(cookieName, token, {
+    cookieStore.set(cookieName, jwt, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
