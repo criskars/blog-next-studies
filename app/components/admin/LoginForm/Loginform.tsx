@@ -6,8 +6,11 @@ import { useAdminToast } from '@/app/components/admin/AdminToast/AdminToast'
 import { Form } from 'radix-ui'
 import { unstable_PasswordToggleField as PasswordToggleField } from 'radix-ui'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
+import { useSearchParams } from 'next/navigation'
 
 export function LoginForm() {
+    const searchParams = useSearchParams()
+    const errorFromUrl = searchParams.get('error')
 
     const [password, setPassword] = useState('')
     const { showToast } = useAdminToast()
@@ -20,6 +23,13 @@ export function LoginForm() {
         loginAction,
         initialState
     )
+    useEffect(() => {
+        if (errorFromUrl === 'auth_required') {
+            showToastRef.current(
+                'You need to be logged in to perform this action.'
+            )
+        }
+    }, [errorFromUrl])
 
     useEffect(() => {
         showToastRef.current = showToast

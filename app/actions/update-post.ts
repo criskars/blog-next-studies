@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { checkAuthentication } from '@/app/lib/login/manage-login'
 import { PostsDatabaseAPI } from '@/repositories/post/drizzle-post-repository'
 import { z } from 'zod'
 import { slugify } from '@/app/utils/slugify'
@@ -58,6 +59,8 @@ export async function updatePost(
     author: string,
     published: boolean
 ): Promise<UpdatePostActionState> {
+    const isAuthenticated = await checkAuthentication()
+
     const parsedData = UpdatePostSchema.safeParse({
         title,
         content,
@@ -94,6 +97,14 @@ export async function updatePost(
             success: false,
             message: 'Slug already in use.',
             fieldErrors: { slug: ['Slug already in use'] },
+        }
+    }
+
+    if (!isAuthenticated) {
+        return {
+            success: false,
+            message: 'User not authenticated.',
+            fieldErrors: {},
         }
     }
 

@@ -3,6 +3,7 @@
 import { error } from 'console'
 import { mkdir, writeFile } from 'fs/promises'
 import { extname, resolve } from 'path'
+import { checkAuthentication } from '../lib/login/manage-login'
 
 export type UploadImageActionResult = {
     url: string
@@ -13,6 +14,14 @@ export async function uploadImage(
     formData: FormData
 ): Promise<UploadImageActionResult> {
     const makeResult = ({ url = '', error = '' }) => ({ url, error })
+    const isAuthenticated = await checkAuthentication()
+
+    if (!isAuthenticated) {
+        return makeResult({
+            url: '',
+            error: 'User not authenticated.',
+        })
+    }
 
     if (!(formData instanceof FormData)) {
         return makeResult({ error: 'Invalid data' })

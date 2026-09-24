@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { SignJWT, jwtVerify } from 'jose'
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY || 'default-secret-key'
@@ -27,6 +28,31 @@ export async function createLoginCookie(email: string) {
         sameSite: 'strict',
         maxAge: loginExpiration,
     })
+}
+
+export async function verifyLoginCookie() {
+    const cookieStore = await cookies()
+    const jwt = cookieStore.get(cookieName)?.value
+    if (!jwt) return false
+
+    try {
+        const { payload } = await jwtVerify(jwt, jwtEncodeKey)
+        if (!payload || typeof payload !== 'object' || !('email' in payload)) {
+            return false
+        }
+        return payload.email === process.env.LOGIN_EMAIL
+    } catch (error) {
+        console.error('Error verifying login cookie:', error)
+        return false
+    }
+}
+
+export async function checkAuthentication() {
+    const isAuthenticated = await verifyLoginCookie()
+    if (!isAuthenticated) {
+        redirect('/admin/login?error=auth_required')
+    }
+    return true
 }
 
 export async function deleteLoginCookie() {

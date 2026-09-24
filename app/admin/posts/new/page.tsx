@@ -3,8 +3,21 @@ import Container from '@/app/components/shared/Container/Container'
 import Link from 'next/link'
 import AdminForm from '@/app/components/admin/AdminForm/AdminForm'
 import { AdminToast } from '@/app/components/admin/AdminToast/AdminToast'
+import { Metadata } from 'next'
+import { checkAuthentication } from '@/app/lib/login/manage-login'
+import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+    title: 'New post',
+    description: 'Admin page to create new posts.',
+}
 
 export default async function AdminNewPost() {
+    const isAuthenticated = await checkAuthentication()
+
+    if (!isAuthenticated) {
+        redirect('/admin/login?error=auth_required')
+    }
     return (
         <Container>
             <AdminToast>

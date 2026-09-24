@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { checkAuthentication } from '@/app/lib/login/manage-login'
 import { PostsDatabaseAPI } from '@/repositories/post/drizzle-post-repository'
 import { z } from 'zod'
 import { slugify } from '@/app/utils/slugify'
@@ -58,6 +59,8 @@ export async function createPost(
     author: string,
     published: boolean
 ): Promise<CreatePostActionState> {
+    const isAuthenticated = await checkAuthentication()
+
     const parsedData = CreatePostSchema.safeParse({
         title,
         content,
@@ -68,16 +71,19 @@ export async function createPost(
         published,
     })
     if (!parsedData.success) {
-        console.error('Validation error:', parsedData.error)
-        console.log('Parsed data:', parsedData)
-        console.log('Parsed data error:', z.flattenError(parsedData.error))
         return {
             success: false,
             message: 'Error while creating post.',
             fieldErrors: z.flattenError(parsedData.error).fieldErrors,
         }
     }
-
+    if (!isAuthenticated) {
+        return {
+            success: false,
+            message: 'User not authenticated.',
+            fieldErrors: {},
+        }
+    }
     try {
         await PostsDatabaseAPI.createPost(parsedData.data)
         revalidatePath('/admin/posts')

@@ -4,16 +4,15 @@ import { Metadata } from 'next'
 import PostImage from '../components/public/PostImage/PostImage'
 import { PostSummary } from '../components/public/PostSummary/PostSummary'
 import SafeMarkdown from '../components/public/SafeMarkdown/SafeMarkdown'
+import { notFound } from 'next/navigation'
 
 type Props = {
     params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    // read route params
     const { slug } = await params
 
-    // fetch data
     const postData = await getPostsBySlugPublic(slug)
 
     return {
@@ -26,6 +25,10 @@ export default async function PostPage({ params }: Props) {
     const { slug } = await params
 
     const postData = await getPostsBySlugPublic(slug)
+
+    if (!postData) {
+        notFound()
+    }
 
     return (
         <Container>
