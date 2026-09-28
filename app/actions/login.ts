@@ -15,7 +15,7 @@ export async function loginAction(state: LoginActionState, formData: FormData) {
     if (!(formData instanceof FormData)) {
         return {
             email: '',
-            error: 'Dados inválidos',
+            error: 'Invalid data',
         }
     }
 
