@@ -1,10 +1,10 @@
-import { PostRepository } from '../post-repository'
+import { DBPostRepository } from '../post-repository'
 import { PostModel } from '@/models/post/post-model'
 import { drizzle } from 'drizzle-orm/libsql'
 import { postsTable } from '@/db/schema'
 import { eq, and, or } from 'drizzle-orm'
 
-export class DrizzlePostRepository implements PostRepository {
+export class DrizzlePostRepository implements DBPostRepository {
     private async readFromDB(): Promise<PostModel[]> {
         const db = drizzle(process.env.DB_FILE_NAME!)
 
@@ -99,4 +99,4 @@ export class DrizzlePostRepository implements PostRepository {
     }
 }
 
-export const PostsDatabaseAPI: PostRepository = new DrizzlePostRepository()
+export const PostsDatabaseAPI: DBPostRepository = new DrizzlePostRepository()

@@ -1,18 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { PostModel } from '@/models/post/post-model'
 import { searchSlug } from '../actions/search-slug'
 
 export default function AboutComponent() {
-    const [selectedPost, setSelectedPost] = useState<PostModel | null>(null)
+    const [selectedPost, setSelectedPost] =
+        useState<Awaited<ReturnType<typeof searchSlug>>>()
     const [searchTerm, setSearchTerm] = useState('')
 
     async function handleSearch(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
 
         if (!searchTerm.trim()) {
-            setSelectedPost(null)
+            setSelectedPost(undefined)
             return
         }
         const post = await searchSlug(searchTerm)

@@ -8,6 +8,7 @@ import { SpinLoader } from './components/shared/SpinLoader/SpinLoader'
 // import { postsTable } from '@/db/schema'
 
 export default async function Home() {
+    
     // const db = drizzle(process.env.DB_FILE_NAME!)
 
     // console.log(await db.select().from(postsTable))

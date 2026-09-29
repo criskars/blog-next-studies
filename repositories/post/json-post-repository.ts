@@ -1,8 +1,8 @@
 import { PostModel } from '@/models/post/post-model'
-import { PostRepository } from '../post-repository'
+import { JSONPostRepository } from '../post-repository'
 import data from '@/db/seed/posts.json'
 
-export class JsonPostRepository implements PostRepository {
+export class JsonPostRepository implements JSONPostRepository {
     private async readFromJsonFile(): Promise<PostModel[]> {
         return data.posts as PostModel[]
     }
@@ -25,4 +25,4 @@ export class JsonPostRepository implements PostRepository {
     }
 }
 
-export const PostsJSONAPI: PostRepository = new JsonPostRepository()
+export const PostsJSONAPI: JSONPostRepository = new JsonPostRepository()

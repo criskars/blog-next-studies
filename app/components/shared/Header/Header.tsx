@@ -2,12 +2,16 @@
 
 import Link from 'next/dist/client/link'
 import { DropdownMenu } from 'radix-ui'
-import { HamburgerMenuIcon, ExitIcon } from '@radix-ui/react-icons'
+import { HamburgerMenuIcon, ExitIcon, EnterIcon } from '@radix-ui/react-icons'
 import { logoutAction } from '@/app/actions/logout'
 
 // Fix the error message to only show if the user tries to execute an action but is logged out - to not show error when logging in for the first time
 
-export function Header() {
+type HeaderProps = {
+    isUserLogged: boolean
+}
+
+export function Header({ isUserLogged }: HeaderProps) {
     return (
         <header className="fixed top-0 right-0 left-0 z-1 bg-zinc-50 font-sans dark:bg-black">
             <div className="flex items-center justify-between">
@@ -33,13 +37,20 @@ export function Header() {
                             <DropdownMenu.Item className="group relative flex min-h-6.25 items-center pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black">
                                 <Link href="/about">About</Link>
                             </DropdownMenu.Item>
-                            
-                            <DropdownMenu.Item className="group relative flex min-h-6.25 items-center gap-2 pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black">
-                                <ExitIcon />
-                                <button onClick={() => logoutAction()}>
-                                    Logout
-                                </button>
-                            </DropdownMenu.Item>
+
+                            {!isUserLogged ? (
+                                <DropdownMenu.Item className="group relative flex min-h-6.25 items-center gap-2 pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black">
+                                    <EnterIcon />
+                                    <Link href="/admin/login">Login</Link>
+                                </DropdownMenu.Item>
+                            ) : (
+                                <DropdownMenu.Item className="group relative flex min-h-6.25 items-center gap-2 pr-2 pl-2 text-[16px] leading-none text-white outline-none hover:bg-white hover:text-black">
+                                    <ExitIcon />
+                                    <button onClick={() => logoutAction()}>
+                                        Logout
+                                    </button>
+                                </DropdownMenu.Item>
+                            )}
                         </DropdownMenu.Content>
                     </DropdownMenu.Portal>
                 </DropdownMenu.Root>

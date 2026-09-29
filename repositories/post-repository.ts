@@ -1,6 +1,6 @@
 import { PostModel } from '@/models/post/post-model'
 
-export interface PostRepository {
+export interface DBPostRepository {
     findAll(): Promise<PostModel[]>
     findAllPublic(): Promise<PostModel[]>
     findBySlugPublic(slug: string): Promise<PostModel>
@@ -13,4 +13,10 @@ export interface PostRepository {
         slug: string
     }): Promise<PostModel>
     updatePost(slug: string, data: Partial<PostModel>): Promise<PostModel>
+}
+
+export interface JSONPostRepository {
+    findAll(): Promise<PostModel[]>
+    findAllPublic(): Promise<PostModel[]>
+    findBySlugPublic(slug: string): Promise<PostModel>
 }

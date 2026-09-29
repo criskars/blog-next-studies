@@ -11,6 +11,7 @@ export async function searchSlug(slug: string): Promise<{
     author: string
     content: string
     published: boolean
+    createdAt: string
 }> {
     const post = await PostsDatabaseAPI.findBySlugPublic(slug)
     console.log('Post found:', post)
@@ -22,6 +23,7 @@ export async function searchSlug(slug: string): Promise<{
         imageSlug: post.coverImageSlug,
         author: post.author,
         content: post.content,
-        published: post.published
+        published: post.published,
+        createdAt: post.createdAt,
     }
 }
