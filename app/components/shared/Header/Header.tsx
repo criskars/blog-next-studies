@@ -5,8 +5,6 @@ import { DropdownMenu } from 'radix-ui'
 import { HamburgerMenuIcon, ExitIcon, EnterIcon } from '@radix-ui/react-icons'
 import { logoutAction } from '@/app/actions/logout'
 
-// Fix the error message to only show if the user tries to execute an action but is logged out - to not show error when logging in for the first time
-
 type HeaderProps = {
     isUserLogged: boolean
 }
